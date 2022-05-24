@@ -5,51 +5,53 @@
         <h3 class="card-header">Données de {{ station.nom }}</h3>
 
         <div class="card-body">
-            https://transfair.issep.be/microcapteurs_api/marche/config/58/data/start/2022-04-01/end/2022-05-18
+            {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
             {% include '@AcMarcheIssep/station/_search.html.twig' %}
 
-            <table class="table table-bordered">
-                <thead>
-                <tr>
-                    <th>Horodatage de la mesure</th>
-                    <th>Signal brut de mesure du NO (monoxyde d’azote)</th>
-                    <th>Concentration en NO exprimée en ppb (parts per billion – parts par milliard)</th>
-                    <th>Signal brut de mesure du NO2 (dioxyde d’azote)</th>
-                    <th>Concentration en NO2 exprimée en ppb (parts per billion – parts par milliard)</th>
-                    <th>Signal brut de mesure de l’O3 (ozone)</th>
-                    <th>Concentration en O3 exprimée en ppb (parts per billion – parts par milliard)</th>
-                    <th>Température exprimée en °C</th>
-                    <th>Pression atmosphérique exprimée en Pa</th>
-                    <th>Humidité relative exprimée en %</th>
-                    <th>Concentration en particules de type PM1 exprimée en µg/m3</th>
-                    <th>Concentration en particules de type PM2.5 exprimée en µg/m3</th>
-                    <th>Énergie consommée par la batterie (mWh)</th>
-                    <th>Tension de la batterie (V)</th>
-                    <th>Énergie fournie par le panneau photovoltaïque (mWh)</th>
-                    <th>Signal brut de mesure de la température par un 2nd capteur</th>
-                </tr>
-                </thead>
-                {% for releve in data %}
+            {% if search %}
+                <table class="table table-bordered">
+                    <thead>
                     <tr>
-                        <td>{{ releve.moment }}</td>
-                        <td>{{ releve.NO }}</td>
-                        <td>{{ releve.ppbNO }}</td>
-                        <td>{{ releve.NO2 }}</td>
-                        <td>{{ releve.ppbNO2 }}</td>
-                        <td>{{ releve.O3NO2 }}</td>
-                        <td>{{ releve.ppbO3NO2 }}</td>
-                        <td>{{ releve.BME_t }}</td>
-                        <td>{{ releve.BME_pres }}</td>
-                        <td>{{ releve.BME_rh }}</td>
-                        <td>{{ releve.PM1 }}</td>
-                        <td>{{ releve.PM25 }}</td>
-                        <td>{{ releve.mWH_Bat }}</td>
-                        <td>{{ releve.Vbat }}</td>
-                        <td>{{ releve.mWH_PV }}</td>
-                        <td>{{ releve.Temp }}</td>
+                        <th>Horodatage de la mesure</th>
+                        <th>Signal brut de mesure du NO (monoxyde d’azote)</th>
+                        <th>Concentration en NO exprimée en ppb (parts per billion – parts par milliard)</th>
+                        <th>Signal brut de mesure du NO2 (dioxyde d’azote)</th>
+                        <th>Concentration en NO2 exprimée en ppb (parts per billion – parts par milliard)</th>
+                        <th>Signal brut de mesure de l’O3 (ozone)</th>
+                        <th>Concentration en O3 exprimée en ppb (parts per billion – parts par milliard)</th>
+                        <th>Température exprimée en °C</th>
+                        <th>Pression atmosphérique exprimée en Pa</th>
+                        <th>Humidité relative exprimée en %</th>
+                        <th>Concentration en particules de type PM1 exprimée en µg/m3</th>
+                        <th>Concentration en particules de type PM2.5 exprimée en µg/m3</th>
+                        <th>Énergie consommée par la batterie (mWh)</th>
+                        <th>Tension de la batterie (V)</th>
+                        <th>Énergie fournie par le panneau photovoltaïque (mWh)</th>
+                        <th>Signal brut de mesure de la température par un 2nd capteur</th>
                     </tr>
-                {% endfor %}
-            </table>
+                    </thead>
+                    {% for releve in data %}
+                        <tr>
+                            <td>{{ releve.moment }}</td>
+                            <td>{{ releve.NO }}</td>
+                            <td>{{ releve.ppbNO }}</td>
+                            <td>{{ releve.NO2 }}</td>
+                            <td>{{ releve.ppbNO2 }}</td>
+                            <td>{{ releve.O3NO2 }}</td>
+                            <td>{{ releve.ppbO3NO2 }}</td>
+                            <td>{{ releve.BME_t }}</td>
+                            <td>{{ releve.BME_pres }}</td>
+                            <td>{{ releve.BME_rh }}</td>
+                            <td>{{ releve.PM1 }}</td>
+                            <td>{{ releve.PM25 }}</td>
+                            <td>{{ releve.mWH_Bat }}</td>
+                            <td>{{ releve.Vbat }}</td>
+                            <td>{{ releve.mWH_PV }}</td>
+                            <td>{{ releve.Temp }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
 
         </div>
 

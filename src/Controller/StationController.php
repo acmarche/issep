@@ -25,11 +25,13 @@ class StationController extends AbstractController
     public function index(): Response
     {
         $stations = $this->stationRepository->getStations();
+        $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
             '@AcMarcheIssep/station/index.html.twig',
             [
                 'stations' => $stations,
+                'urlExecuted' => $urlExecuted,
             ]
         );
     }
@@ -44,12 +46,14 @@ class StationController extends AbstractController
             return $this->redirectToRoute('issep_home');
         }
         $config = $this->stationRepository->getConfig($station->id_configuration);
+        $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
             '@AcMarcheIssep/station/config.html.twig',
             [
                 'station' => $station,
                 'config' => $config,
+                'urlExecuted' => $urlExecuted,
             ]
         );
     }
@@ -69,6 +73,7 @@ class StationController extends AbstractController
         $form = $this->createForm(StationDataSearchType::class, $args);
 
         $data = [];
+        $urlExecuted = null;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $dataForm = $form->getData();
@@ -80,6 +85,7 @@ class StationController extends AbstractController
                     $dateBegin->format('Y-m-d'),
                     $dateEnd->format('Y-m-d')
                 );
+                $urlExecuted = $this->stationRepository->urlExecuted;
             } catch (\Exception $exception) {
                 $this->addFlash('danger', 'Erreur lors de la recherche: '.$exception->getMessage());
             }
@@ -90,7 +96,9 @@ class StationController extends AbstractController
             [
                 'station' => $station,
                 'data' => $data,
+                'urlExecuted' => $urlExecuted,
                 'form' => $form->createView(),
+                'search' => $form->isSubmitted(),
             ]
         );
     }

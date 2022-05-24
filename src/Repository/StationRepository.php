@@ -5,6 +5,7 @@ namespace AcMarche\Issep\Repository;
 class StationRepository
 {
     private StationRemoteRepository $stationRemoteRepository;
+    public ?string $urlExecuted = null;
 
     public function __construct()
     {
@@ -28,7 +29,10 @@ class StationRepository
      */
     public function getStations(): array
     {
-        return json_decode($this->stationRemoteRepository->fetchStations());
+        $stations = json_decode($this->stationRemoteRepository->fetchStations());
+        $this->setUrlExecuted();
+
+        return $stations;
     }
 
     public function getStation(int $idStation): ?\stdClass
@@ -48,7 +52,10 @@ class StationRepository
      */
     public function getConfigs(): array
     {
-        return json_decode($this->stationRemoteRepository->fetchConfigs());
+        $configs = json_decode($this->stationRemoteRepository->fetchConfigs());
+        $this->setUrlExecuted();
+
+        return $configs;
     }
 
     public function getConfig(int $idConfiguration, array $configs = [])
@@ -72,6 +79,14 @@ class StationRepository
      */
     public function fetchStationData(int $idStation, string $dateBegin, string $dateEnd): array
     {
-        return json_decode($this->stationRemoteRepository->fetchStationData($idStation, $dateBegin, $dateEnd));
+        $data = json_decode($this->stationRemoteRepository->fetchStationData($idStation, $dateBegin, $dateEnd));
+        $this->setUrlExecuted();
+
+        return $data;
+    }
+
+    private function setUrlExecuted(): void
+    {
+        $this->urlExecuted = $this->stationRemoteRepository->urlExecuted;
     }
 }

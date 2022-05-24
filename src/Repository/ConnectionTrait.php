@@ -16,6 +16,7 @@ trait ConnectionTrait
 {
     private HttpClientInterface $httpClient;
     private ?string $base_uri = null;
+    public ?string $urlExecuted = null;
 
     public function connect(): void
     {
@@ -34,6 +35,7 @@ trait ConnectionTrait
      */
     private function executeRequest(string $url, array $options = [], string $method = 'GET'): string
     {
+        $this->urlExecuted = $url;
         try {
             $response = $this->httpClient->request(
                 $method,
