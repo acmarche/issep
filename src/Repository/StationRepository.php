@@ -34,7 +34,10 @@ class StationRepository
     public function getStation(int $idStation): ?\stdClass
     {
         $stations = $this->getStations();
-        $key = array_search($idStation, array_column($stations, 'id'));
+
+        if (!$key = array_search($idStation, array_column($stations, 'id'))) {
+            return null;
+        }
 
         return $stations[$key];
     }

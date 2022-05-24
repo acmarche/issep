@@ -15,6 +15,7 @@ class StationDataSearchType extends AbstractType
                 'dateBegin',
                 DateType::class,
                 [
+                    'label' => 'Date de début',
                     'required' => true,
                 ]
             )
@@ -22,6 +23,7 @@ class StationDataSearchType extends AbstractType
                 'dateEnd',
                 DateType::class,
                 [
+                    'label' => 'Date de fin',
                     'required' => true,
                 ]
             );
