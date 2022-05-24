@@ -1,0 +1,40 @@
+{% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Stations Issep</h3>
+
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Numéro</th>
+                    <th>Id config</th>
+                    <th>Nom</th>
+                    <th>Début configuation</th>
+                    <th>Configuration</th>
+                    <th>Données</th>
+                </tr>
+                </thead>
+                {% for station in stations %}
+                    <tr>
+                        <td>{{ station.id }}</td>
+                        <td>{{ station.id_configuration }}</td>
+                        <td>
+                            {{ station.nom }}
+                        </td>
+                        <td>{{ station.config_end }}</td>
+                        <td>
+                            <a href="{{ path('issep_config', {'id': station.id}) }}">Config</a>
+                        </td>
+                        <td>
+                            <a href="{{ path('issep_data', {'id': station.id}) }}">Relevés</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+{% endblock %}

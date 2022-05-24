@@ -1,0 +1,14 @@
+{% extends 'base5.html.twig' %}
+
+{% block brand %}
+    <a class="navbar-brand" href="{{ path('issep_home') }}" title="Accueil">
+        <i class="fas fa-home"></i> Stations</a>
+{% endblock %}
+
+{% block menu_top %}
+    <li class="nav-item">
+        <a href="{{ path('issep_home') }}" class="nav-link">
+            <i class="fas fa-plus"></i> Stations
+        </a>
+    </li>
+{% endblock %}

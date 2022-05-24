@@ -1,0 +1,97 @@
+<?php
+
+namespace AcMarche\Issep\Controller;
+
+use AcMarche\Issep\Form\StationDataSearchType;
+use AcMarche\Issep\Repository\StationRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+#[Route(path: '/')]
+#[IsGranted(data: 'ROLE_CAPTEUR')]
+class StationController extends AbstractController
+{
+    private StationRepository $stationRepository;
+
+    public function __construct()
+    {
+        $this->stationRepository = new StationRepository();
+    }
+
+    #[Route(path: '/', name: 'issep_home')]
+    public function index(): Response
+    {
+        $stations = $this->stationRepository->getStations();
+
+        return $this->render(
+            '@AcMarcheIssep/station/index.html.twig',
+            [
+                'stations' => $stations,
+            ]
+        );
+    }
+
+    #[Route(path: '/config/{id}', name: 'issep_config')]
+    public function config(string $id): Response
+    {
+        $station = $this->stationRepository->getStation($id);
+        if (!$station) {
+            $this->addFlash('danger', 'Station non trouvée');
+
+            return $this->redirectToRoute('issep_home');
+        }
+        $config = $this->stationRepository->getConfig($station->id_configuration);
+
+        return $this->render(
+            '@AcMarcheIssep/station/config.html.twig',
+            [
+                'station' => $station,
+                'config' => $config,
+            ]
+        );
+    }
+
+    #[Route(path: '/data/{id}', name: 'issep_data')]
+    public function data(Request $request, string $id): Response
+    {
+        $args = ['dateBegin' => new \DateTime('-2 weeks'), 'dateEnd' => new \DateTime()];
+
+        $station = $this->stationRepository->getStation($id);
+        if (!$station) {
+            $this->addFlash('danger', 'Station non trouvée');
+
+            return $this->redirectToRoute('issep_home');
+        }
+
+        $form = $this->createForm(StationDataSearchType::class, $args);
+
+        $data = [];
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $dataForm = $form->getData();
+            $dateBegin = $dataForm['dateBegin'];
+            $dateEnd = $dataForm['dateEnd'];
+            try {
+                $data = $this->stationRepository->fetchStationData(
+                    $id,
+                    $dateBegin->format('Y-m-d'),
+                    $dateEnd->format('Y-m-d')
+                );
+            } catch (\Exception $exception) {
+                $this->addFlash('danger', 'Erreur lors de la recherche: '.$exception->getMessage());
+            }
+        }
+
+        return $this->render(
+            '@AcMarcheIssep/station/data.html.twig',
+            [
+                'station' => $station,
+                'data' => $data,
+                'form' => $form->createView(),
+            ]
+        );
+    }
+}

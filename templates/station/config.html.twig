@@ -1,0 +1,197 @@
+{% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Configuration de {{ station.nom }}</h3>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th>
+                        id_configuration<br>
+                        <span class="text-muted">Identifiant de la configuration</span>
+                    </th>
+                    <td>{{ config.id_configuration }}</td>
+                </tr>
+                <tr>
+                    <th>
+                        moment<br>
+                        <span class="text-muted">Horodatage de la mesure</span></th>
+                    <td>{{ config.moment }}</td>
+                </tr>
+                <tr>
+                    <th>
+                        NO<br>
+                        <span class="text-muted">Signal brut de mesure du NO (monoxyde d’azote)</span>
+                    </th>
+                    <td>{{ config.NO }}</td>
+                </tr>
+                <tr>
+                    <th>NO2<br>
+                        <span class="text-muted">Signal brut de mesure du NO2 (dioxyde d’azote)</span>
+                    </th>
+                    <td>{{ config.NO2 }}</td>
+                </tr>
+                <tr>
+                    <th> O3NO2<br>
+                        <span class="text-muted">Signal brut de mesure de l’O3 (ozone)</span>
+                    </th>
+                    <td>{{ config.O3NO2 }}</td>
+                </tr>
+                <tr>
+                    <th>
+                        ppbNO<br>
+                        <span class="text-muted">Concentration en NO exprimée en ppb (parts per billion – parts par milliard)</span>
+                    </th>
+                    <td>{{ config.ppbNO }}</td>
+                </tr>
+                <tr>
+                    <th>ppbNO_statut</th>
+                    <td>{{ config.ppbNO_statut }}</td>
+                </tr>
+                <tr>
+                    <th>ppbNO2
+                        <br>
+                        <span class="text-muted">Concentration en NO2 exprimée en ppb (parts per billion – parts par milliard)</span>
+                    </th>
+                    <td>{{ config.ppbNO2 }}</td>
+                </tr>
+                <tr>
+                    <th>ppbNO2_statut</th>
+                    <td>{{ config.ppbNO2_statut }}</td>
+                </tr>
+                <tr>
+                    <th>ppbO3NO2<br>
+                        <span class="text-muted">Concentration en O3 exprimée en ppb (parts per billion – parts par milliard)</span>
+                    </th>
+                    <td>{{ config.ppbO3NO2 }}</td>
+                </tr>
+                <tr>
+                    <th>ppbO3NO2_statut</th>
+                    <td>{{ config.ppbO3NO2_statut }}</td>
+                </tr>
+                <tr>
+                    <th>ugpcmNO</th>
+                    <td>{{ config.ugpcmNO }}</td>
+                </tr>
+                <tr>
+                    <th>ugpcmNO_statut</th>
+                    <td>{{ config.ugpcmNO_statut }}</td>
+                </tr>
+                <tr>
+                    <th>ugpcmNO2</th>
+                    <td>{{ config.ugpcmNO2 }}</td>
+                </tr>
+                <tr>
+                    <th>ugpcmNO2_statut</th>
+                    <td>{{ config.ugpcmNO2_statut }}</td>
+                </tr>
+                <tr>
+                    <th>ugpcmO3NO2</th>
+                    <td>{{ config.ugpcmO3NO2 }}</td>
+                </tr>
+                <tr>
+                    <th>ugpcmO3NO2_statut</th>
+                    <td>{{ config.ugpcmO3NO2_statut }}</td>
+                </tr>
+                <tr>
+                    <th>BME_t
+                        <br>
+                        <span class="text-muted">Température exprimée en °C</span>
+                    </th>
+                    <td>{{ config.BME_t }}</td>
+                </tr>
+                <tr>
+                    <th>BME_t_statut</th>
+                    <td>{{ config.BME_t_statut }}</td>
+                </tr>
+                <tr>
+                    <th>BME_pres
+                        <br>
+                        <span class="text-muted">Pression atmosphérique exprimée en Pa</span>
+                    </th>
+                    <td>{{ config.BME_pres }}</td>
+                </tr>
+                <tr>
+                    <th>BME_pres_statut</th>
+                    <td>{{ config.BME_pres_statut }}</td>
+                </tr>
+                <tr>
+                    <th>BME_rh
+                        <br>
+                        <span class="text-muted">Humidité relative exprimée en %</span></th>
+                    <td>{{ config.BME_rh }}</td>
+                </tr>
+                <tr>
+                    <th>BME_rh_statut</th>
+                    <td>{{ config.BME_rh_statut }}</td>
+                </tr>
+                <tr>
+                    <th>PM1
+                        <br>
+                        <span class="text-muted">Concentration en particules de type PM1 exprimée en µg/m3</span>
+                    </th>
+                    <td>{{ config.PM1 }}</td>
+                </tr>
+                <tr>
+                    <th>PM1_statut</th>
+                    <td>{{ config.PM1_statut }}</td>
+                </tr>
+                <tr>
+                    <th>PM25
+                        <br>
+                        <span class="text-muted">Concentration en particules de type PM2.5 exprimée en µg/m3</span></th>
+                    <td>{{ config.PM25 }}</td>
+                </tr>
+                <tr>
+                    <th>PM25_statut</th>
+                    <td>{{ config.PM25_statut }}</td>
+                </tr>
+                <tr>
+                    <th>PM4</th>
+                    <td>{{ config.PM4 }}</td>
+                </tr>
+                <tr>
+                    <th>PM4_statut</th>
+                    <td>{{ config.PM4_statut }}</td>
+                </tr>
+                <tr>
+                    <th>PM10</th>
+                    <td>{{ config.PM10 }}</td>
+                </tr>
+                <tr>
+                    <th>PM10_statut</th>
+                    <td>{{ config.PM10_statut }}</td>
+                </tr>
+                <tr>
+                    <th>Temp<br>
+                        <span class="text-muted">Signal brut de mesure de la température par un 2nd capteur</span>
+                    </th>
+                    <td>{{ config.Temp }}</td>
+                </tr>
+                <tr>
+                    <th>Temp_statut</th>
+                    <td>{{ config.Temp_statut }}</td>
+                </tr>
+                <tr>
+                    <th>Vbat<br>
+                        <span class="text-muted">Tension de la batterie (V)</span>
+                    </th>
+                    <td>{{ config.Vbat }}</td>
+                </tr>
+                <tr>
+                    <th>mWH_Bat<br>
+                        <span class="text-muted">Énergie consommée par la batterie (mWh)</span>
+                    </th>
+                    <td>{{ config.mWH_Bat }}</td>
+                </tr>
+                <tr>
+                    <th>mWH_PV<br>
+                        <span class="text-muted">Énergie fournie par le panneau photovoltaïque (mWh)</span>
+                    </th>
+                    <td>{{ config.mWH_PV }}</td>
+                </tr>
+            </table>
+
+        </div>
+
+    </div>
+{% endblock %}
