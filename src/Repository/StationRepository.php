@@ -31,6 +31,14 @@ class StationRepository
         return json_decode($this->stationRemoteRepository->fetchStations());
     }
 
+    public function getStation(int $idStation): ?\stdClass
+    {
+        $stations = $this->getStations();
+        $key = array_search($idStation, array_column($stations, 'id'));
+
+        return $stations[$key];
+    }
+
     /**
      * @return array
      * @throws \Exception
