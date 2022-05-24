@@ -15,9 +15,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 trait ConnectionTrait
 {
     private HttpClientInterface $httpClient;
-    private ?string $code_query;
     private ?string $base_uri = null;
-    private ?string $ws_key;
 
     public function connect(): void
     {

@@ -2,14 +2,13 @@
 
 namespace AcMarche\Issep\Repository;
 
-class CapteurRepository
+class StationRepository
 {
-
-    private CapteurRemoteRepository $capteurRemoteRepository;
+    private StationRemoteRepository $stationRemoteRepository;
 
     public function __construct()
     {
-        $this->capteurRemoteRepository = new CapteurRemoteRepository();
+        $this->stationRemoteRepository = new StationRemoteRepository();
     }
 
     /**
@@ -27,14 +26,18 @@ class CapteurRepository
      * +"config_end": "2023-01-01 00:00:00.000"
      * @return array
      */
-    public function getCapteurs(): array
+    public function getStations(): array
     {
-        return json_decode($this->capteurRemoteRepository->fetchCapteurs());
+        return json_decode($this->stationRemoteRepository->fetchStations());
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
     public function getConfigs(): array
     {
-        return json_decode($this->capteurRemoteRepository->fetchConfigs());
+        return json_decode($this->stationRemoteRepository->fetchConfigs());
     }
 
     public function getConfig(int $idConfiguration, array $configs = [])
@@ -46,5 +49,18 @@ class CapteurRepository
         $key = array_search($idConfiguration, array_column($configs, 'id_configuration'));
 
         return $configs[$key];
+    }
+
+    /**
+     * @param int $idStation
+     * @param string $dateBegin
+     * @param string $dateEnd
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function fetchStationData(int $idStation, string $dateBegin, string $dateEnd): array
+    {
+        return json_decode($this->stationRemoteRepository->fetchStationData($idStation, $dateBegin, $dateEnd));
     }
 }
