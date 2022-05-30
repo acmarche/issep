@@ -85,6 +85,25 @@ class StationRepository
         return $data;
     }
 
+    public function getIndices(): array
+    {
+        $data = json_decode($this->stationRemoteRepository->fetchIndices());
+        $this->setUrlExecuted();
+
+        return $data;
+    }
+
+    public function getIndice(int $idConfig, array $indices= [])
+    {
+        if (count($indices) < 1) {
+            $indices = $this->getIndices();
+        }
+
+        $key = array_search($idConfig, array_column($indices, 'config_id'));
+
+        return $indices[$key];
+    }
+
     private function setUrlExecuted(): void
     {
         $this->urlExecuted = $this->stationRemoteRepository->urlExecuted;

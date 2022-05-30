@@ -3,6 +3,7 @@
 namespace AcMarche\Issep\Controller;
 
 use AcMarche\Issep\Form\StationDataSearchType;
+use AcMarche\Issep\Indice\Indice;
 use AcMarche\Issep\Repository\StationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +26,13 @@ class StationController extends AbstractController
     public function index(): Response
     {
         $stations = $this->stationRepository->getStations();
+        $indices = $this->stationRepository->getIndices();
+        array_map(function ($station) use ($indices) {
+            $data = $this->stationRepository->getIndice($station->id_configuration, $indices);
+            $indice = Indice::colorByIndice($data->aqi_value);
+            $station->indice = $indice;
+        }, $stations);
+
         $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
@@ -45,14 +53,17 @@ class StationController extends AbstractController
 
             return $this->redirectToRoute('issep_home');
         }
-        $indice = null;
-        $urlExecuted = '';
+        $data = $this->stationRepository->getIndice($station->id_configuration);
+        $indice = Indice::colorByIndice($data->aqi_value);
+        $urlExecuted = $this->stationRepository->urlExecuted;
+
 
         return $this->render(
             '@AcMarcheIssep/station/indice.html.twig',
             [
                 'station' => $station,
                 'indice' => $indice,
+                'data' => $data,
                 'urlExecuted' => $urlExecuted,
             ]
         );

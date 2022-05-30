@@ -7,12 +7,36 @@
         <h3 class="card-header">Indice de {{ station.nom }}</h3>
         <div class="card-body">
 
+            {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
+
             <div class="alert alert-info">
-                Couleur du feu au hasard le temps d'accéder aux données...
+                <a href="https://airindex.eea.europa.eu/Map/AQI/Viewer/" target="_blank">Cet indice varie de 1 à 6</a>
+                <br>
+                Cliquez sur <a href="https://airindex.eea.europa.eu/Map/AQI/Viewer/">"About the European Air Quality
+                    Index" pour plus d’informations sur cet indice</a><br>
             </div>
 
-            {% include '@AcMarcheIssep/station/_feu.html.twig' %}
-
+            <div class="row">
+                <div class="col-6">
+                    {% include '@AcMarcheIssep/station/_feu.html.twig' %}
+                </div>
+                <div class="col-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Date</th>
+                            <td>{{ data.ts }}</td>
+                        </tr>
+                        <tr>
+                            <th>aqi_value</th>
+                            <td>{{ data.aqi_value }}</td>
+                        </tr>
+                        <tr>
+                            <th>Label</th>
+                            <td>{{ indice.name }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

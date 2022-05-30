@@ -22,7 +22,7 @@
                             {{ station.nom }}
                         </td>
                         <td>
-                            <a href="{{ path('issep_indice', {'id': station.id}) }}">Indice</a>
+                            <a href="{{ path('issep_indice', {'id': station.id}) }}">{{ station.indice.name }}</a>
                         </td>
                         <td>
                             <a href="{{ path('issep_config', {'id': station.id}) }}">Config</a>

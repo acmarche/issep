@@ -44,4 +44,9 @@ class StationRemoteRepository
         return $this->executeRequest($this->base_uri.'/config/'.$idCapteur.'/data/start/'.$dateBegin.'/end/'.$dateEnd);
     }
 
+    public function fetchIndices(): ?string
+    {
+        return $this->executeRequest($this->base_uri.'/euaqi');
+    }
+
 }
