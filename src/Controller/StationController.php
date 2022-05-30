@@ -60,7 +60,6 @@ class StationController extends AbstractController
         if (isset($colors[$indice->color()])) {
             $colors[$indice->color()] = $indice->color();
         }
-        dump($colors);
 
         return $this->render(
             '@AcMarcheIssep/station/indice.html.twig',
