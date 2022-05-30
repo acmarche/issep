@@ -1,4 +1,14 @@
 {% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block stylesheets %}
+    <style>
+        .myCircle {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
 {% block body %}
 
     <div class="card">
@@ -21,8 +31,11 @@
                         <td>
                             {{ station.nom }}
                         </td>
-                        <td>
-                            <a href="{{ path('issep_indice', {'id': station.id}) }}">{{ station.indice.name }}</a>
+                        <td class="d-flex align-items-center justify-content-evenly">
+                            <a href="{{ path('issep_indice', {'id': station.id}) }}">
+                                {{ station.indice.name }}
+                            </a>
+                            <span class="myCircle" style="background-color: {{ station.indice.color }};"></span>
                         </td>
                         <td>
                             <a href="{{ path('issep_config', {'id': station.id}) }}">Config</a>
