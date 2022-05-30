@@ -5,11 +5,11 @@
 {% block body %}
     <div class="card">
         <h3 class="card-header">Indice de {{ station.nom }}</h3>
-        <div class="card-body">
+        <div class="card-body" style="position: relative;">
 
             {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
 
-            <div class="alert alert-info">
+            <div class="alert alert-info" style="position: relative; z-index: 1">
                 <a href="https://airindex.eea.europa.eu/Map/AQI/Viewer/" target="_blank">Cet indice varie de 1 à 6</a>
                 <br>
                 Cliquez sur <a href="https://airindex.eea.europa.eu/Map/AQI/Viewer/">"About the European Air Quality
@@ -17,7 +17,7 @@
             </div>
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-6 p-5">
                     {% include '@AcMarcheIssep/station/_feu.html.twig' %}
                 </div>
                 <div class="col-6">
@@ -33,6 +33,10 @@
                         <tr>
                             <th>Label</th>
                             <td>{{ indice.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Couleur</th>
+                            <td>{{ indice.color }}</td>
                         </tr>
                     </table>
                 </div>

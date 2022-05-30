@@ -56,7 +56,11 @@ class StationController extends AbstractController
         $data = $this->stationRepository->getIndice($station->id_configuration);
         $indice = Indice::colorByIndice($data->aqi_value);
         $urlExecuted = $this->stationRepository->urlExecuted;
-
+        $colors = ['red' => '', 'yellow' => '', 'green' => ''];
+        if (isset($colors[$indice->color()])) {
+            $colors[$indice->color()] = $indice->color();
+        }
+        dump($colors);
 
         return $this->render(
             '@AcMarcheIssep/station/indice.html.twig',
@@ -64,6 +68,7 @@ class StationController extends AbstractController
                 'station' => $station,
                 'indice' => $indice,
                 'data' => $data,
+                'colors' => $colors,
                 'urlExecuted' => $urlExecuted,
             ]
         );

@@ -1,9 +1,5 @@
 /* https://codepen.io/Jab2870/pen/DzxrpM */
 
-html {
-    background: linear-gradient(#08f, #fff);
-}
-
 .trafficlight {
     background: #222;
     background-image: linear-gradient(transparent 2%, #111 2%, transparent 3%, #111 30%);
