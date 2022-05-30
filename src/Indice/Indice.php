@@ -15,7 +15,7 @@ enum Indice
     public function color(): string
     {
         return match ($this) {
-            Indice::GOOD => 'grey',
+            Indice::GOOD => 'green',
             Indice::FAIR => 'green',
             Indice::MODERATE => 'yellow',
             Indice::POOR => 'yellow',
