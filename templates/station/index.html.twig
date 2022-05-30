@@ -9,9 +9,8 @@
                 <thead>
                 <tr>
                     <th>Numéro</th>
-                    <th>Id config</th>
                     <th>Nom</th>
-                    <th>Début configuation</th>
+                    <th>Indice</th>
                     <th>Configuration</th>
                     <th>Données</th>
                 </tr>
@@ -19,11 +18,12 @@
                 {% for station in stations %}
                     <tr>
                         <td>{{ station.id }}</td>
-                        <td>{{ station.id_configuration }}</td>
                         <td>
                             {{ station.nom }}
                         </td>
-                        <td>{{ station.config_end }}</td>
+                        <td>
+                            <a href="{{ path('issep_indice', {'id': station.id}) }}">Indice</a>
+                        </td>
                         <td>
                             <a href="{{ path('issep_config', {'id': station.id}) }}">Config</a>
                         </td>

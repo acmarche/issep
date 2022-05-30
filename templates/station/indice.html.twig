@@ -1,0 +1,18 @@
+{% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmarcheissep/feux.css') }}"/>
+{% endblock %}
+{% block body %}
+    <div class="card">
+        <h3 class="card-header">Indice de {{ station.nom }}</h3>
+        <div class="card-body">
+
+            <div class="alert alert-info">
+                Couleur du feu au hasard le temps d'accéder aux données...
+            </div>
+
+            {% include '@AcMarcheIssep/station/_feu.html.twig' %}
+
+        </div>
+    </div>
+{% endblock %}

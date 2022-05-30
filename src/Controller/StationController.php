@@ -36,6 +36,28 @@ class StationController extends AbstractController
         );
     }
 
+    #[Route(path: '/indice/{id}', name: 'issep_indice')]
+    public function indice(string $id): Response
+    {
+        $station = $this->stationRepository->getStation($id);
+        if (!$station) {
+            $this->addFlash('danger', 'Station non trouvée');
+
+            return $this->redirectToRoute('issep_home');
+        }
+        $indice = null;
+        $urlExecuted = '';
+
+        return $this->render(
+            '@AcMarcheIssep/station/indice.html.twig',
+            [
+                'station' => $station,
+                'indice' => $indice,
+                'urlExecuted' => $urlExecuted,
+            ]
+        );
+    }
+
     #[Route(path: '/config/{id}', name: 'issep_config')]
     public function config(string $id): Response
     {
