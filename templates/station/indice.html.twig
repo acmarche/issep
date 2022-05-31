@@ -1,6 +1,14 @@
 {% extends '@AcMarcheIssep/layout.html.twig' %}
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmarcheissep/feux.css') }}"/>
+     <style>
+        .myCircle {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
 {% endblock %}
 {% block body %}
     <div class="card">
@@ -16,31 +24,39 @@
                     Index" pour plus d’informations sur cet indice</a><br>
             </div>
 
-            <div class="row">
-                <div class="col-6 p-5">
-                    {% include '@AcMarcheIssep/station/_feu.html.twig' %}
+            {% if lastIndice %}
+                <div class="row">
+                    <div class="col-6 p-5">
+                        {% include '@AcMarcheIssep/station/_feu.html.twig' %}
+                    </div>
+                    <div class="col-6">
+                        <h4 class="text-success">Dernier relevé</h4>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Date</th>
+                                <td>{{ lastIndice.ts }}</td>
+                            </tr>
+                            <tr>
+                                <th>aqi_value</th>
+                                <td>{{ lastIndice.aqi_value }}</td>
+                            </tr>
+                            <tr>
+                                <th>Label</th>
+                                <td>{{ indice.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Couleur</th>
+                                <td>{{ indice.color }}</td>
+                            </tr>
+                        </table>
+                        <h4 class="text-success">Historiques</h4>
+                    </div>
                 </div>
-                <div class="col-6">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>Date</th>
-                            <td>{{ data.ts }}</td>
-                        </tr>
-                        <tr>
-                            <th>aqi_value</th>
-                            <td>{{ data.aqi_value }}</td>
-                        </tr>
-                        <tr>
-                            <th>Label</th>
-                            <td>{{ indice.name }}</td>
-                        </tr>
-                        <tr>
-                            <th>Couleur</th>
-                            <td>{{ indice.color }}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+            {% else %}
+                <p>Aucun indice</p>
+            {% endif %}
+
+            {% include '@AcMarcheIssep/station/_historique.html.twig' %}
         </div>
     </div>
 {% endblock %}

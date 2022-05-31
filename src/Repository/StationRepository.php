@@ -2,6 +2,8 @@
 
 namespace AcMarche\Issep\Repository;
 
+use AcMarche\Issep\Indice\SortUtils;
+
 class StationRepository
 {
     private StationRemoteRepository $stationRemoteRepository;
@@ -93,15 +95,17 @@ class StationRepository
         return $data;
     }
 
-    public function getIndice(int $idConfig, array $indices= [])
+    public function getIndicesByStation(int $idConfig, array $indices = []): array
     {
         if (count($indices) < 1) {
             $indices = $this->getIndices();
         }
 
-        $key = array_search($idConfig, array_column($indices, 'config_id'));
+        $data = array_filter($indices, function ($station) use ($idConfig) {
+            return (int)$station->config_id === $idConfig;
+        });
 
-        return $indices[$key];
+        return SortUtils::sortByDate($data);
     }
 
     private function setUrlExecuted(): void

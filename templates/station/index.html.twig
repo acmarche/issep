@@ -32,10 +32,12 @@
                             {{ station.nom }}
                         </td>
                         <td class="d-flex align-items-center justify-content-evenly">
-                            <a href="{{ path('issep_indice', {'id': station.id}) }}">
-                                {{ station.indice.name }}
-                            </a>
-                            <span class="myCircle" style="background-color: {{ station.indice.color }};"></span>
+                            {% if station.indice %}
+                                <a href="{{ path('issep_indice', {'id': station.id}) }}">
+                                    {{ station.indice.name }}
+                                </a>
+                                <span class="myCircle" style="background-color: {{ station.indice.color }};"></span>
+                            {% endif %}
                         </td>
                         <td>
                             <a href="{{ path('issep_config', {'id': station.id}) }}">Config</a>

@@ -4,6 +4,7 @@ namespace AcMarche\Issep\Controller;
 
 use AcMarche\Issep\Form\StationDataSearchType;
 use AcMarche\Issep\Indice\Indice;
+use AcMarche\Issep\Indice\IndiceUtils;
 use AcMarche\Issep\Repository\StationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,9 +29,11 @@ class StationController extends AbstractController
         $stations = $this->stationRepository->getStations();
         $indices = $this->stationRepository->getIndices();
         array_map(function ($station) use ($indices) {
-            $data = $this->stationRepository->getIndice($station->id_configuration, $indices);
-            $indice = Indice::colorByIndice($data->aqi_value);
-            $station->indice = $indice;
+            $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
+            $station->indice = null;
+            if (count($indices) > 0) {
+                $station->indice = Indice::colorByIndice($indices[0]->aqi_value);
+            }
         }, $stations);
 
         $urlExecuted = $this->stationRepository->urlExecuted;
@@ -53,8 +56,14 @@ class StationController extends AbstractController
 
             return $this->redirectToRoute('issep_home');
         }
-        $data = $this->stationRepository->getIndice($station->id_configuration);
-        $indice = Indice::colorByIndice($data->aqi_value);
+
+        $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+        $indice = $lastIndice = null;
+        if (count($indices) > 0) {
+            $lastIndice = $indices[0];
+            $indice = Indice::colorByIndice($lastIndice->aqi_value);
+            IndiceUtils::setColors($indices);
+        }
         $urlExecuted = $this->stationRepository->urlExecuted;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
         if (isset($colors[$indice->color()])) {
@@ -66,7 +75,8 @@ class StationController extends AbstractController
             [
                 'station' => $station,
                 'indice' => $indice,
-                'data' => $data,
+                'lastIndice' => $lastIndice,
+                'indices' => $indices,
                 'colors' => $colors,
                 'urlExecuted' => $urlExecuted,
             ]

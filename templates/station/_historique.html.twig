@@ -1,0 +1,20 @@
+<h4 class="text-success" id="historique">Historiques</h4>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>aqi_value</th>
+        <th>Couleur</th>
+    </tr>
+    </thead>
+    {% for indiceH in indices %}
+        <tr>
+            <td>{{ indiceH.ts }}</td>
+            <td>{{ indiceH.aqi_value }}</td>
+            <td>
+                <span class="myCircle" style="background-color: {{ indiceH.indice.color }};"></span>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
