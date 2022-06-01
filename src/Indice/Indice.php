@@ -21,7 +21,7 @@ enum Indice
             Indice::POOR => 'yellow',
             Indice::VERY_POOR => 'red',
             Indice::EXTREMELY_POOR => 'red',
-            Indice::NO_DATA => '',
+            Indice::NO_DATA => 'blue',
         };
     }
 
