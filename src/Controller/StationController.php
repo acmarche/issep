@@ -175,7 +175,6 @@ class StationController extends AbstractController
         $today = date('Y-m-d');
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
         $indices = SortUtils::filterByDate($indices, $today);
-        dump($indices);
         IndiceUtils::setIndicesEnum($indices);
         $urlExecuted = $this->stationRepository->urlExecuted;
 
