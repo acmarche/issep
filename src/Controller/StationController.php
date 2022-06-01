@@ -28,14 +28,8 @@ class StationController extends AbstractController
     {
         $stations = $this->stationRepository->getStations();
         $indices = $this->stationRepository->getIndices();
-        array_map(function ($station) use ($indices) {
-            $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
-            $station->indice = null;
-            if (count($indices) > 0) {
-                $station->indice = Indice::colorByIndice($indices[0]->aqi_value);
-            }
-        }, $stations);
-
+        $indiceUtile = new IndiceUtils();
+        $indiceUtile->setIndices($stations, $indices);
         $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
@@ -59,16 +53,16 @@ class StationController extends AbstractController
 
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
         $indice = $lastIndice = null;
+        $colors = ['red' => '', 'yellow' => '', 'green' => ''];
         if (count($indices) > 0) {
             $lastIndice = $indices[0];
             $indice = Indice::colorByIndice($lastIndice->aqi_value);
             IndiceUtils::setColors($indices);
+            if (isset($colors[$indice->color()])) {
+                $colors[$indice->color()] = $indice->color();
+            }
         }
         $urlExecuted = $this->stationRepository->urlExecuted;
-        $colors = ['red' => '', 'yellow' => '', 'green' => ''];
-        if (isset($colors[$indice->color()])) {
-            $colors[$indice->color()] = $indice->color();
-        }
 
         return $this->render(
             '@AcMarcheIssep/station/indice.html.twig',
@@ -146,6 +140,22 @@ class StationController extends AbstractController
                 'urlExecuted' => $urlExecuted,
                 'form' => $form->createView(),
                 'search' => $form->isSubmitted(),
+            ]
+        );
+    }
+
+    #[Route(path: '/map', name: 'issep_map')]
+    public function map(): Response
+    {
+        $stations = $this->stationRepository->getStations();
+        $indiceUtile = new IndiceUtils();
+        $indices = $this->stationRepository->getIndices();
+        $indiceUtile->setColors2($stations, $indices);
+
+        return $this->render(
+            '@AcMarcheIssep/station/map.html.twig',
+            [
+                'stations' => $stations,
             ]
         );
     }
