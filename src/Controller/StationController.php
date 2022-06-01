@@ -5,6 +5,7 @@ namespace AcMarche\Issep\Controller;
 use AcMarche\Issep\Form\StationDataSearchType;
 use AcMarche\Issep\Indice\Indice;
 use AcMarche\Issep\Indice\IndiceUtils;
+use AcMarche\Issep\Indice\SortUtils;
 use AcMarche\Issep\Repository\StationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,14 +53,15 @@ class StationController extends AbstractController
         }
 
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+        IndiceUtils::setIndicesEnum($indices);
         $indice = $lastIndice = null;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
         if (count($indices) > 0) {
             $lastIndice = $indices[0];
             $indice = Indice::colorByIndice($lastIndice->aqi_value);
-            IndiceUtils::setColors($indices);
-            if (isset($colors[$indice->color()])) {
-                $colors[$indice->color()] = $indice->color();
+            $color = $indice->color();
+            if (isset($colors[$color])) {
+                $colors[$color] = $color;
             }
         }
         $urlExecuted = $this->stationRepository->urlExecuted;
@@ -150,12 +152,39 @@ class StationController extends AbstractController
         $stations = $this->stationRepository->getStations();
         $indiceUtile = new IndiceUtils();
         $indices = $this->stationRepository->getIndices();
-        $indiceUtile->setColors2($stations, $indices);
+        $indiceUtile->setColors($stations, $indices);
 
         return $this->render(
             '@AcMarcheIssep/station/map.html.twig',
             [
                 'stations' => $stations,
+            ]
+        );
+    }
+
+    #[Route(path: '/h24/{id}', name: 'issep_h24')]
+    public function h24(string $id): Response
+    {
+        $station = $this->stationRepository->getStation($id);
+        if (!$station) {
+            $this->addFlash('danger', 'Station non trouvée');
+
+            return $this->redirectToRoute('issep_home');
+        }
+
+        $today = date('Y-m-d');
+        $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+        $indices = SortUtils::filterByDate($indices, $today);
+        dump($indices);
+        IndiceUtils::setIndicesEnum($indices);
+        $urlExecuted = $this->stationRepository->urlExecuted;
+
+        return $this->render(
+            '@AcMarcheIssep/station/h24.html.twig',
+            [
+                'station' => $station,
+                'indices' => $indices,
+                'urlExecuted' => $urlExecuted,
             ]
         );
     }

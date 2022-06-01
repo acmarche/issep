@@ -20,6 +20,7 @@
                 <tr>
                     <th>Numéro</th>
                     <th>Nom</th>
+                    <th>Aujourd'hui</th>
                     <th>Indice</th>
                     <th>Configuration</th>
                     <th>Données</th>
@@ -30,6 +31,11 @@
                         <td>{{ station.id }}</td>
                         <td>
                             {{ station.nom }}
+                        </td>
+                        <td>
+                            <a href="{{ path('issep_h24', {'id': station.id}) }}">
+                                Aujourd'hui
+                            </a>
                         </td>
                         <td class="d-flex align-items-center justify-content-evenly">
                             {% if station.indice %}

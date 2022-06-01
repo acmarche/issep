@@ -41,7 +41,7 @@
         }
 
         function addMarker(station) {
-            let url = '/issep/indice/' + station.id;
+            let url = '/issep/h24/' + station.id;
             let color = '<span class="myCircle" style="background-color:' + station.color + ';"></span>';
             L.marker([station.lat, station.lon]).addTo(map)
                 .bindPopup('<a href="' + url + '">' + station.nom + ' <br/>' + color + '</a>');

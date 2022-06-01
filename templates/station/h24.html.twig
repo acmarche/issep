@@ -1,0 +1,21 @@
+{% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmarcheissep/feux.css') }}"/>
+    <style>
+        .myCircle {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="card">
+    <h3 class="card-header">Aujourd'hui {{ station.nom }}</h3>
+    <div class="card-body" style="z-index: 3;">
+        {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
+        {% include '@AcMarcheIssep/station/_historique.html.twig' %}
+    </div>
+</div>
+{% endblock %}

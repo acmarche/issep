@@ -22,4 +22,16 @@ class SortUtils
 
         return $indices;
     }
+
+    public static function filterByDate(array $indices, string $date): array
+    {
+        $data = [];
+        foreach ($indices as $row) {
+            if (str_contains($row->ts, $date)) {
+                $data[] = $row;
+            }
+        }
+
+        return $data;
+    }
 }

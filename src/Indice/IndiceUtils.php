@@ -13,7 +13,7 @@ class IndiceUtils
         $this->stationRepository = new StationRepository();
     }
 
-    public static function setColors(array $indices)
+    public static function setIndicesEnum(array $indices)
     {
         foreach ($indices as $indice) {
             $indice->indice = Indice::colorByIndice($indice->aqi_value);
@@ -31,7 +31,7 @@ class IndiceUtils
         }, $stations);
     }
 
-    public function setColors2(array $stations, array $indices): void
+    public function setColors(array $stations, array $indices): void
     {
         array_map(function ($station) use ($indices) {
             $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
