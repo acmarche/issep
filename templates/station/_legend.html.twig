@@ -1,0 +1,30 @@
+{% block stylesheets %}
+    <style>
+        .myCircle {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Label</th>
+        <th>Label</th>
+        <th>Valeur</th>
+        <th>Couleur</th>
+    </tr>
+    </thead>
+    {% for indice in indices %}
+        <tr>
+            <td>{{ indice.label }}</td>
+            <td>{{ indice.name }}</td>
+            <td>{{ indice.value }}</td>
+            <td>
+                <span class="myCircle" style="background-color: {{ indice.color }};"></span>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
