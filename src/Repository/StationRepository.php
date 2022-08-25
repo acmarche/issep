@@ -6,12 +6,10 @@ use AcMarche\Issep\Utils\SortUtils;
 
 class StationRepository
 {
-    private StationRemoteRepository $stationRemoteRepository;
     public ?string $urlExecuted = null;
 
-    public function __construct()
+    public function __construct(private StationRemoteRepository $stationRemoteRepository)
     {
-        $this->stationRemoteRepository = new StationRemoteRepository();
     }
 
     /**
@@ -39,12 +37,10 @@ class StationRepository
         foreach ($stationsTmp as $station) {
             preg_match($regex, $station->nom, $x);
             $station->number = $x[1];
-            $stations[$station->number] = $station;
+            $stations[] = $station;
         }
 
-        $stations = SortUtils::sortStations($stations);
-
-        return $stations;
+        return SortUtils::sortStations($stations);
     }
 
     public function getStation(int $idStation): ?\stdClass
