@@ -1,0 +1,69 @@
+<table class="table table-bordered">
+    <tr>
+        <th>
+            number<br>
+            <span class="text-muted">Numéro</span>
+        </th>
+        <td>{{ station.number }} </td>
+    </tr>
+    <tr>
+        <th>
+            attrib_start<br>
+            <span class="text-muted">Début</span>
+        </th>
+        <td>{{ station.attrib_start|format_date('full') }} </td>
+    </tr>
+    <tr>
+        <th>
+            attrib_end<br>
+            <span class="text-muted">Fin</span>
+        </th>
+        <td>{{ station.attrib_end|format_date('full') }} </td>
+    </tr>
+    <tr>
+        <th>
+            lat et lon<br>
+            <span class="text-muted">Latitude et longitude</span>
+        </th>
+        <td>
+            <a href="https://www.openstreetmap.org/?mlat={{ station.lat }}&mlon={{ station.lon }}" target="_blank">
+                {{ station.lat }},{{ station.lon }}
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <th>
+            id<br>
+            <span class="text-muted">Identifiant</span>
+        </th>
+        <td>{{ station.id }}</td>
+    </tr>
+    <tr>
+        <th>
+            id_reseau<br>
+            <span class="text-muted">Identifiant réseau</span>
+        </th>
+        <td>{{ station.id_reseau }}</td>
+    </tr>
+    <tr>
+        <th>
+            id_configuration<br>
+            <span class="text-muted">Identifiant de la configuration</span>
+        </th>
+        <td>{{ station.id_configuration }}</td>
+    </tr>
+    <tr>
+        <th>
+            X et Y<br>
+            <span class="text-muted">?</span>
+        </th>
+        <td>{{ station.x }} || {{ station.y }}</td>
+    </tr>
+    <tr>
+        <th>
+            altitude<br>
+            <span class="text-muted">Altitude</span>
+        </th>
+        <td>{{ station.altitude }}</td>
+    </tr>
+</table>

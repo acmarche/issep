@@ -4,6 +4,9 @@
         <h3 class="card-header">Configuration de {{ station.nom }}</h3>
         <div class="card-body">
             {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
+            {% include '@AcMarcheIssep/station/_station.html.twig' %}
+
+            <h4 class="text-success">Configuration détaillée</h4>
             <table class="table table-bordered">
                 <tr>
                     <th>
@@ -59,16 +62,20 @@
                     <th>ppbNO2_statut</th>
                     <td>{{ config.ppbNO2_statut }}</td>
                 </tr>
-                <tr>
-                    <th>ppbO3NO2<br>
-                        <span class="text-muted">Concentration en O3 exprimée en ppb (parts per billion – parts par milliard)</span>
-                    </th>
-                    <td>{{ config.ppbO3NO2 }}</td>
-                </tr>
-                <tr>
-                    <th>ppbO3NO2_statut</th>
-                    <td>{{ config.ppbO3NO2_statut }}</td>
-                </tr>
+                {% if config.ppbO3NO2 is defined %}
+                    <tr>
+                        <th>ppbO3NO2<br>
+                            <span class="text-muted">Concentration en O3 exprimée en ppb (parts per billion – parts par milliard)</span>
+                        </th>
+                        <td>{{ config.ppbO3NO2 }}</td>
+                    </tr>
+                {% endif %}
+                {% if config.ppbO3NO2_statut is defined %}
+                    <tr>
+                        <th>ppbO3NO2_statut</th>
+                        <td>{{ config.ppbO3NO2_statut }}</td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <th>ugpcmNO</th>
                     <td>{{ config.ugpcmNO }}</td>
@@ -85,14 +92,18 @@
                     <th>ugpcmNO2_statut</th>
                     <td>{{ config.ugpcmNO2_statut }}</td>
                 </tr>
-                <tr>
-                    <th>ugpcmO3NO2</th>
-                    <td>{{ config.ugpcmO3NO2 }}</td>
-                </tr>
-                <tr>
-                    <th>ugpcmO3NO2_statut</th>
-                    <td>{{ config.ugpcmO3NO2_statut }}</td>
-                </tr>
+                {% if config.ugpcmO3NO2 is defined %}
+                    <tr>
+                        <th>ugpcmO3NO2</th>
+                        <td>{{ config.ugpcmO3NO2 }}</td>
+                    </tr>
+                {% endif %}
+                {% if config.ugpcmO3NO2_statut is defined %}
+                    <tr>
+                        <th>ugpcmO3NO2_statut</th>
+                        <td>{{ config.ugpcmO3NO2_statut }}</td>
+                    </tr>
+                {% endif %}
                 <tr>
                     <th>BME_t
                         <br>
