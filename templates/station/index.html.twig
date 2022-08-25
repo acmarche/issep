@@ -12,7 +12,7 @@
 {% block body %}
 
     <div class="card">
-        <h3 class="card-header">Stations Issep</h3>
+        <h3 class="card-header">{{ stations|length }} stations Issep</h3>
         <div class="card-body">
             {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
             <table class="table table-bordered">
@@ -28,7 +28,9 @@
                 </thead>
                 {% for station in stations %}
                     <tr>
-                        <td>{{ station.id }}</td>
+                        <td>
+                            {{ station.number }}
+                        </td>
                         <td>
                             {{ station.nom }}
                         </td>

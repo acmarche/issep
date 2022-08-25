@@ -2,7 +2,7 @@
 
 namespace AcMarche\Issep\Repository;
 
-use AcMarche\Issep\Indice\SortUtils;
+use AcMarche\Issep\Utils\SortUtils;
 
 class StationRepository
 {
@@ -31,8 +31,18 @@ class StationRepository
      */
     public function getStations(): array
     {
-        $stations = json_decode($this->stationRemoteRepository->fetchStations());
+        $stations = [];
+        $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations());
         $this->setUrlExecuted();
+
+        $regex = "#\((\d{1,2})\)#";
+        foreach ($stationsTmp as $station) {
+            preg_match($regex, $station->nom, $x);
+            $station->number = $x[1];
+            $stations[$station->number] = $station;
+        }
+
+        $stations = SortUtils::sortStations($stations);
 
         return $stations;
     }
