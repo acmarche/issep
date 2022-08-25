@@ -20,24 +20,11 @@ class IndiceUtils
     public function setIndices(array $stations, array $indices): void
     {
         array_map(function ($station) use ($indices) {
-            $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
-            $station->indice = null;
-            if (count($indices) > 0) {
-                $station->indice = $this->createIndiceModel($indices[0]);
-            }
-        }, $stations);
-    }
-
-    public function setColors(array $stations, array $indices): void
-    {
-        array_map(function ($station) use ($indices) {
-            $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
-            if (count($indices) > 0) {
-                $station->color = 'black';
-                $indice = IndiceEnum::colorByIndice($indices[0]->aqi_value);
-                if ($indice) {
-                    $station->color = $indice->color();
-                }
+            $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
+            $station->indice = $station->last_indice = null;
+            if (count($station->indices) > 0) {
+                $station->indice = $this->createIndiceModel($station->indices[0]);
+                $station->last_indice = $station->indices[0];
             }
         }, $stations);
     }

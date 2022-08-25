@@ -147,7 +147,12 @@ class StationController extends AbstractController
     {
         $stations = $this->stationRepository->getStations();
         $indices = $this->stationRepository->getIndices();
-        $this->indiceUtils->setColors($stations, $indices);
+        $this->indiceUtils->setIndices($stations, $indices);
+        foreach ($stations as $station) {
+            if ($station->last_indice) {
+                $station->color = FeuUtils::color($station->last_indice->aqi_value);
+            }
+        }
 
         return $this->render(
             '@AcMarcheIssep/station/map.html.twig',

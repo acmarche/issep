@@ -11,7 +11,7 @@
             <td>{{ indiceH.ts }}</td>
             <td>{{ indiceH.aqi_value }}</td>
             <td>
-                <span class="myCircle" style="background-color: {{ indiceH.indice.color }};"></span>
+                {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': indiceH.indice}  %}
             </td>
         </tr>
     {% endfor %}

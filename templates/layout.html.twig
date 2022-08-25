@@ -5,6 +5,17 @@
         <i class="fas fa-home"></i> Stations</a>
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .myCircle {
+            height: 25px;
+            width: 25px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
 {% block menu_top %}
     <li class="nav-item">
         <a href="{{ path('issep_home') }}" class="nav-link">

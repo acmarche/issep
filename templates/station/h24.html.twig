@@ -1,14 +1,7 @@
 {% extends '@AcMarcheIssep/layout.html.twig' %}
 {% block stylesheets %}
+        {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmarcheissep/feux.css') }}"/>
-    <style>
-        .myCircle {
-            height: 25px;
-            width: 25px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-    </style>
 {% endblock %}
 {% block body %}
 <div class="card">

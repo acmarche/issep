@@ -1,14 +1,7 @@
 {% extends '@AcMarcheIssep/layout.html.twig' %}
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmarcheissep/feux.css') }}"/>
-    <style>
-        .myCircle {
-            height: 25px;
-            width: 25px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-    </style>
 {% endblock %}
 {% block body %}
     <div class="card">
@@ -49,7 +42,7 @@
                             <tr>
                                 <th>Couleur</th>
                                 <td>
-                                  <span class="myCircle" style="background-color: {{ lastIndice.indice.color }};"></span>
+                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': lastIndice.indice} %}
                                 </td>
                             </tr>
                         </table>
