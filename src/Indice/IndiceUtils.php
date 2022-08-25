@@ -6,17 +6,14 @@ use AcMarche\Issep\Repository\StationRepository;
 
 class IndiceUtils
 {
-    private StationRepository $stationRepository;
-
-    public function __construct()
+    public function __construct(private StationRepository $stationRepository)
     {
-        $this->stationRepository = new StationRepository();
     }
 
-    public static function setIndicesEnum(array $indices)
+    public function setIndicesEnum(array $indices)
     {
         foreach ($indices as $indice) {
-            $indice->indice = Indice::colorByIndice($indice->aqi_value);
+            $indice->indice = $this->createIndiceModel($indice);
         }
     }
 
@@ -26,7 +23,7 @@ class IndiceUtils
             $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
             $station->indice = null;
             if (count($indices) > 0) {
-                $station->indice = Indice::colorByIndice($indices[0]->aqi_value);
+                $station->indice = $this->createIndiceModel($indices[0]);
             }
         }, $stations);
     }
@@ -37,11 +34,19 @@ class IndiceUtils
             $indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
             if (count($indices) > 0) {
                 $station->color = 'black';
-                $indice = Indice::colorByIndice($indices[0]->aqi_value);
+                $indice = IndiceEnum::colorByIndice($indices[0]->aqi_value);
                 if ($indice) {
                     $station->color = $indice->color();
                 }
             }
         }, $stations);
+    }
+
+    private function createIndiceModel(object $indice): IndiceModel
+    {
+        $t = IndiceEnum::colorByIndice($indice->aqi_value)->color();
+        $d = IndiceEnum::labelByIndice($indice->aqi_value);
+
+        return new IndiceModel($t, $d);
     }
 }

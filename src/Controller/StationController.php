@@ -3,9 +3,10 @@
 namespace AcMarche\Issep\Controller;
 
 use AcMarche\Issep\Form\StationDataSearchType;
-use AcMarche\Issep\Indice\Indice;
+use AcMarche\Issep\Indice\IndiceEnum;
 use AcMarche\Issep\Indice\IndiceUtils;
 use AcMarche\Issep\Repository\StationRepository;
+use AcMarche\Issep\Utils\FeuUtils;
 use AcMarche\Issep\Utils\SortUtils;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,11 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted(data: 'ROLE_CAPTEUR')]
 class StationController extends AbstractController
 {
-    private StationRepository $stationRepository;
-
-    public function __construct()
+    public function __construct(private StationRepository $stationRepository, private IndiceUtils $indiceUtils)
     {
-        $this->stationRepository = new StationRepository();
     }
 
     #[Route(path: '/', name: 'issep_home')]
@@ -29,8 +27,7 @@ class StationController extends AbstractController
     {
         $stations = $this->stationRepository->getStations();
         $indices = $this->stationRepository->getIndices();
-        $indiceUtile = new IndiceUtils();
-        $indiceUtile->setIndices($stations, $indices);
+        $this->indiceUtils->setIndices($stations, $indices);
         $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
@@ -53,15 +50,15 @@ class StationController extends AbstractController
         }
 
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
-        IndiceUtils::setIndicesEnum($indices);
-        $indice = $lastIndice = null;
+        $this->indiceUtils->setIndicesEnum($indices);
+
+        $lastIndice = null;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
         if (count($indices) > 0) {
             $lastIndice = $indices[0];
-            $indice = Indice::colorByIndice($lastIndice->aqi_value);
-            $color = $indice->color();
-            if (isset($colors[$color])) {
-                $colors[$color] = $color;
+            $colorClass = FeuUtils::color($lastIndice->aqi_value);
+            if (isset($colors[$colorClass])) {
+                $colors[$colorClass] = $colorClass;
             }
         }
         $urlExecuted = $this->stationRepository->urlExecuted;
@@ -70,7 +67,6 @@ class StationController extends AbstractController
             '@AcMarcheIssep/station/indice.html.twig',
             [
                 'station' => $station,
-                'indice' => $indice,
                 'lastIndice' => $lastIndice,
                 'indices' => $indices,
                 'colors' => $colors,
@@ -150,9 +146,8 @@ class StationController extends AbstractController
     public function map(): Response
     {
         $stations = $this->stationRepository->getStations();
-        $indiceUtile = new IndiceUtils();
         $indices = $this->stationRepository->getIndices();
-        $indiceUtile->setColors($stations, $indices);
+        $this->indiceUtils->setColors($stations, $indices);
 
         return $this->render(
             '@AcMarcheIssep/station/map.html.twig',
@@ -175,7 +170,7 @@ class StationController extends AbstractController
         $today = date('Y-m-d');
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
         $indices = SortUtils::filterByDate($indices, $today);
-        IndiceUtils::setIndicesEnum($indices);
+        $this->indiceUtils->setIndicesEnum($indices);
         $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
@@ -184,6 +179,17 @@ class StationController extends AbstractController
                 'station' => $station,
                 'indices' => $indices,
                 'urlExecuted' => $urlExecuted,
+            ]
+        );
+    }
+
+    #[Route(path: '/legend', name: 'issep_legend')]
+    public function legend(): Response
+    {
+        return $this->render(
+            '@AcMarcheIssep/station/legend.html.twig',
+            [
+                'indices' => IndiceEnum::cases(),
             ]
         );
     }
