@@ -1,7 +1,7 @@
 {% extends '@AcMarcheIssep/layout.html.twig' %}
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/acmarcheissep/feux.css') }}"/>
-     <style>
+    <style>
         .myCircle {
             height: 25px;
             width: 25px;
@@ -21,7 +21,7 @@
                 <a href="https://airindex.eea.europa.eu/Map/AQI/Viewer/" target="_blank">Cet indice varie de 1 à 6</a>
                 <br>
                 Cliquez sur <a href="https://airindex.eea.europa.eu/Map/AQI/Viewer/">"About the European Air Quality
-                    Index" pour plus d’informations sur cet indice</a><br>
+                    Index" pour plus d'informations sur cet indice</a><br>
             </div>
 
             {% if lastIndice %}
@@ -42,20 +42,23 @@
                             </tr>
                             <tr>
                                 <th>Label</th>
-                                <td>{{ indice.name }}</td>
+                                <td>
+                                    {{ lastIndice.indice.label }}
+                                </td>
                             </tr>
                             <tr>
                                 <th>Couleur</th>
-                                <td>{{ indice.color }}</td>
+                                <td>
+                                  <span class="myCircle" style="background-color: {{ lastIndice.indice.color }};"></span>
+                                </td>
                             </tr>
                         </table>
-                        <h4 class="text-success">Historiques</h4>
                     </div>
                 </div>
             {% else %}
-                <p>Aucun indice</p>
+                <p>Pas de dernier indice</p>
             {% endif %}
-<h4 class="text-success" id="historique">Historiques</h4>
+            <h4 class="text-success" id="historique">Historiques</h4>
             {% include '@AcMarcheIssep/station/_historique.html.twig' %}
         </div>
     </div>

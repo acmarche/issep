@@ -42,7 +42,7 @@
                         <td class="d-flex align-items-center justify-content-evenly">
                             {% if station.indice %}
                                 <a href="{{ path('issep_indice', {'id': station.id}) }}">
-                                    {{ station.indice.name }}
+                                    {{ station.indice.label }}
                                 </a>
                                 <span class="myCircle" style="background-color: {{ station.indice.color }};"></span>
                             {% endif %}
