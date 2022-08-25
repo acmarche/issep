@@ -6,16 +6,12 @@ class StationRemoteRepository
 {
     use ConnectionTrait;
 
-    public function __construct()
-    {
-        $this->connect();
-    }
-
-    /**
-     *
-     */
     public function fetchStations(): ?string
     {
+        if (!$this->httpClient) {
+            $this->connect();
+        }
+
         return $this->executeRequest($this->base_uri.'/point');
     }
 
@@ -26,6 +22,10 @@ class StationRemoteRepository
      */
     public function fetchConfigs(): ?string
     {
+        if (!$this->httpClient) {
+            $this->connect();
+        }
+
         return $this->executeRequest($this->base_uri.'/point/config/lastdata');
     }
 
@@ -41,11 +41,19 @@ class StationRemoteRepository
      */
     public function fetchStationData(int $idCapteur, string $dateBegin, string $dateEnd): ?string
     {
+        if (!$this->httpClient) {
+            $this->connect();
+        }
+
         return $this->executeRequest($this->base_uri.'/config/'.$idCapteur.'/data/start/'.$dateBegin.'/end/'.$dateEnd);
     }
 
     public function fetchIndices(): ?string
     {
+        if (!$this->httpClient) {
+            $this->connect();
+        }
+
         return $this->executeRequest($this->base_uri.'/euaqi');
     }
 

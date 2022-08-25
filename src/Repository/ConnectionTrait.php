@@ -14,7 +14,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 trait ConnectionTrait
 {
-    private HttpClientInterface $httpClient;
+    private ?HttpClientInterface $httpClient= null;
     private ?string $base_uri = null;
     public ?string $urlExecuted = null;
 
