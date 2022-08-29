@@ -1,5 +1,10 @@
-{% if urlExecuted %}
-    <p class="text-muted">
-        Url interrogée: {{ urlExecuted }}
-    </p>
+{% if urlsExecuted|length > 0 %}
+    <div class="text-muted d-flex my-2">
+        <span>Url interrogée:</span>
+        <div class="ms-2">
+            {% for url in urlsExecuted %}
+                {{ url }}<br/>
+            {% endfor %}
+        </div>
+    </div>
 {% endif %}

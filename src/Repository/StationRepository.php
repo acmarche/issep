@@ -6,7 +6,7 @@ use AcMarche\Issep\Utils\SortUtils;
 
 class StationRepository
 {
-    public ?string $urlExecuted = null;
+    public array $urlsExecuted = [];
 
     public function __construct(private StationRemoteRepository $stationRemoteRepository)
     {
@@ -116,6 +116,6 @@ class StationRepository
 
     private function setUrlExecuted(): void
     {
-        $this->urlExecuted = $this->stationRemoteRepository->urlExecuted;
+        $this->urlsExecuted[] = $this->stationRemoteRepository->urlExecuted;
     }
 }

@@ -28,13 +28,12 @@ class StationController extends AbstractController
         $stations = $this->stationRepository->getStations();
         $indices = $this->stationRepository->getIndices();
         $this->indiceUtils->setIndices($stations, $indices);
-        $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
             '@AcMarcheIssep/station/index.html.twig',
             [
                 'stations' => $stations,
-                'urlExecuted' => $urlExecuted,
+                'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ]
         );
     }
@@ -61,7 +60,6 @@ class StationController extends AbstractController
                 $colors[$colorClass] = $colorClass;
             }
         }
-        $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
             '@AcMarcheIssep/station/indice.html.twig',
@@ -70,7 +68,7 @@ class StationController extends AbstractController
                 'lastIndice' => $lastIndice,
                 'indices' => $indices,
                 'colors' => $colors,
-                'urlExecuted' => $urlExecuted,
+                'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ]
         );
     }
@@ -79,20 +77,21 @@ class StationController extends AbstractController
     public function config(string $id): Response
     {
         $station = $this->stationRepository->getStation($id);
+
         if (!$station) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
         }
+
         $config = $this->stationRepository->getConfig($station->id_configuration);
-        $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
             '@AcMarcheIssep/station/config.html.twig',
             [
                 'station' => $station,
                 'config' => $config,
-                'urlExecuted' => $urlExecuted,
+                'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ]
         );
     }
@@ -112,7 +111,6 @@ class StationController extends AbstractController
         $form = $this->createForm(StationDataSearchType::class, $args);
 
         $data = [];
-        $urlExecuted = null;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $dataForm = $form->getData();
@@ -124,7 +122,6 @@ class StationController extends AbstractController
                     $dateBegin->format('Y-m-d'),
                     $dateEnd->format('Y-m-d')
                 );
-                $urlExecuted = $this->stationRepository->urlExecuted;
             } catch (\Exception $exception) {
                 $this->addFlash('danger', 'Erreur lors de la recherche: '.$exception->getMessage());
             }
@@ -135,7 +132,7 @@ class StationController extends AbstractController
             [
                 'station' => $station,
                 'data' => $data,
-                'urlExecuted' => $urlExecuted,
+                'urlsExecuted' => $this->stationRepository->urlsExecuted,
                 'form' => $form->createView(),
                 'search' => $form->isSubmitted(),
             ]
@@ -158,6 +155,7 @@ class StationController extends AbstractController
             '@AcMarcheIssep/station/map.html.twig',
             [
                 'stations' => $stations,
+                'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ]
         );
     }
@@ -176,14 +174,13 @@ class StationController extends AbstractController
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
         $indices = SortUtils::filterByDate($indices, $today);
         $this->indiceUtils->setIndicesEnum($indices);
-        $urlExecuted = $this->stationRepository->urlExecuted;
 
         return $this->render(
             '@AcMarcheIssep/station/h24.html.twig',
             [
                 'station' => $station,
                 'indices' => $indices,
-                'urlExecuted' => $urlExecuted,
+                'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ]
         );
     }
