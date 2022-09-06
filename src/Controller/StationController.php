@@ -146,6 +146,7 @@ class StationController extends AbstractController
         $indices = $this->stationRepository->getIndices();
         $this->indiceUtils->setIndices($stations, $indices);
         foreach ($stations as $station) {
+            $station->color = FeuUtils::colorGrey();
             if ($station->last_indice) {
                 $station->color = FeuUtils::color($station->last_indice->aqi_value);
             }
