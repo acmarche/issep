@@ -36,9 +36,17 @@
                             <td>{{ releve.NO }}</td>
                             <td>{{ releve.ppbNO }}</td>
                             <td>{{ releve.NO2 }}</td>
-                            <td>{{ releve.ppbNO2 }}</td>
-                            <td>{{ releve.O3NO2 }}</td>
-                            <td>{{ releve.ppbO3NO2 }}</td>
+                            <td>
+                                {{ releve.ppbNO2 }}
+                            </td>
+                            <td>
+                                {{ releve.O3NO2 }}
+                            </td>
+                            <td>
+                                {% if releve.ppbO3NO2 is defined %}
+                                    {{ releve.ppbO3NO2 }}
+                                {% endif %}
+                            </td>
                             <td>{{ releve.BME_t }}</td>
                             <td>{{ releve.BME_pres }}</td>
                             <td>{{ releve.BME_rh }}</td>
