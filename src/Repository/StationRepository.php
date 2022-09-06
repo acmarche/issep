@@ -83,16 +83,16 @@ class StationRepository
     }
 
     /**
-     * @param int $idStation
+     * @param int $idConfiguration
      * @param string $dateBegin
      * @param string $dateEnd
      *
      * @return array
      * @throws \Exception
      */
-    public function fetchStationData(int $idStation, string $dateBegin, string $dateEnd): array
+    public function fetchStationData(int $idConfiguration, string $dateBegin, string $dateEnd): array
     {
-        $data = json_decode($this->stationRemoteRepository->fetchStationData($idStation, $dateBegin, $dateEnd));
+        $data = json_decode($this->stationRemoteRepository->fetchStationData($idConfiguration, $dateBegin, $dateEnd));
         $this->setUrlExecuted();
 
         return $data;
