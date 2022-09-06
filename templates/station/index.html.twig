@@ -14,6 +14,7 @@
                     <th>Indice</th>
                     <th>Configuration</th>
                     <th>Données</th>
+                    <th>Ids (Jf)</th>
                 </tr>
                 </thead>
                 {% for station in stations %}
@@ -42,6 +43,9 @@
                         </td>
                         <td>
                             <a href="{{ path('issep_data', {'id': station.id}) }}">Relevés</a>
+                        </td>
+                        <td class="text-muted">
+                            id: {{ station.id }}, config {{ station.id_configuration }}, reseau {{ station.id_reseau }}
                         </td>
                     </tr>
                 {% endfor %}
