@@ -118,7 +118,7 @@ class StationController extends AbstractController
             $dateEnd = $dataForm['dateEnd'];
             try {
                 $data = $this->stationRepository->fetchStationData(
-                    $id,
+                    $station->id_configuration,
                     $dateBegin->format('Y-m-d'),
                     $dateEnd->format('Y-m-d')
                 );
