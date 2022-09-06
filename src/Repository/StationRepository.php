@@ -47,11 +47,16 @@ class StationRepository
     {
         $stations = $this->getStations();
 
-        if (!$key = array_search($idStation, array_column($stations, 'id'))) {
+        $key = array_search($idStation, array_column($stations, 'id'));
+        if ($key === false) {
             return null;
         }
 
-        return $stations[$key];
+        if (isset($stations[$key])) {
+            return $stations[$key];
+        }
+
+        return null;
     }
 
     /**
