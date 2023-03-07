@@ -100,10 +100,14 @@ class StationRepository
 
     public function getIndices(): array
     {
-        $data = json_decode($this->stationRemoteRepository->fetchIndices());
-        $this->setUrlExecuted();
+        try {
+            $data = json_decode($this->stationRemoteRepository->fetchIndices());
+            $this->setUrlExecuted();
 
-        return $data;
+            return $data;
+        } catch (\Exception $exception) {
+            return [];
+        }
     }
 
     public function getIndicesByStation(int $idConfig, array $indices = []): array
