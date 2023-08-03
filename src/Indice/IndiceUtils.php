@@ -6,7 +6,7 @@ use AcMarche\Issep\Repository\StationRepository;
 
 class IndiceUtils
 {
-    public function __construct(private StationRepository $stationRepository)
+    public function __construct(private readonly StationRepository $stationRepository)
     {
     }
 
@@ -22,7 +22,7 @@ class IndiceUtils
         array_map(function ($station) use ($indices) {
             $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
             $station->indice = $station->last_indice = null;
-            if (count($station->indices) > 0) {
+            if ($station->indices !== []) {
                 $station->indice = $this->createIndiceModel($station->indices[0]);
                 $station->last_indice = $station->indices[0];
             }

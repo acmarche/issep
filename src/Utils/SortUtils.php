@@ -8,13 +8,7 @@ class SortUtils
     {
         usort(
             $stations,
-            function ($a, $b) {
-                if ($a->nom == $b->nom) {
-                    return 0;
-                }
-
-                return $a->nom > $b->nom ? 1 : -1;
-            }
+            fn($a, $b) => $a->nom <=> $b->nom
         );
         return $stations;
     }
@@ -42,7 +36,7 @@ class SortUtils
     {
         $data = [];
         foreach ($indices as $row) {
-            if (str_contains($row->ts, $date)) {
+            if (str_contains((string) $row->ts, $date)) {
                 $data[] = $row;
             }
         }

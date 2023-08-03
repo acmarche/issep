@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[IsGranted('ROLE_CAPTEUR')]
 class StationController extends AbstractController
 {
-    public function __construct(private StationRepository $stationRepository, private IndiceUtils $indiceUtils)
+    public function __construct(private readonly StationRepository $stationRepository, private readonly IndiceUtils $indiceUtils)
     {
     }
 
@@ -42,7 +42,7 @@ class StationController extends AbstractController
     public function indice(string $id): Response
     {
         $station = $this->stationRepository->getStation($id);
-        if (!$station) {
+        if (!$station instanceof \stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -53,7 +53,7 @@ class StationController extends AbstractController
 
         $lastIndice = null;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
-        if (count($indices) > 0) {
+        if ($indices !== []) {
             $lastIndice = $indices[0];
             $colorClass = FeuUtils::color($lastIndice->aqi_value);
             if (isset($colors[$colorClass])) {
@@ -78,7 +78,7 @@ class StationController extends AbstractController
     {
         $station = $this->stationRepository->getStation($id);
 
-        if (!$station) {
+        if (!$station instanceof \stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -102,7 +102,7 @@ class StationController extends AbstractController
         $args = ['dateBegin' => new \DateTime('-2 weeks'), 'dateEnd' => new \DateTime()];
 
         $station = $this->stationRepository->getStation($id);
-        if (!$station) {
+        if (!$station instanceof \stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -165,7 +165,7 @@ class StationController extends AbstractController
     public function h24(string $id): Response
     {
         $station = $this->stationRepository->getStation($id);
-        if (!$station) {
+        if (!$station instanceof \stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');

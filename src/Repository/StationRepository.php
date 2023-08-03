@@ -8,7 +8,7 @@ class StationRepository
 {
     public array $urlsExecuted = [];
 
-    public function __construct(private StationRemoteRepository $stationRemoteRepository)
+    public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
     }
 
@@ -30,12 +30,12 @@ class StationRepository
     public function getStations(): array
     {
         $stations = [];
-        $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations());
+        $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations(), null, 512, JSON_THROW_ON_ERROR);
         $this->setUrlExecuted();
 
         $regex = "#\((\d{1,2})\)#";
         foreach ($stationsTmp as $station) {
-            preg_match($regex, $station->nom, $x);
+            preg_match($regex, (string) $station->nom, $x);
             $station->number = $x[1];
             $stations[] = $station;
         }
@@ -52,11 +52,7 @@ class StationRepository
             return null;
         }
 
-        if (isset($stations[$key])) {
-            return $stations[$key];
-        }
-
-        return null;
+        return $stations[$key] ?? null;
     }
 
     /**
@@ -65,7 +61,7 @@ class StationRepository
      */
     public function getConfigs(): array
     {
-        $configs = json_decode($this->stationRemoteRepository->fetchConfigs());
+        $configs = json_decode($this->stationRemoteRepository->fetchConfigs(), null, 512, JSON_THROW_ON_ERROR);
         $this->setUrlExecuted();
 
         return $configs;
@@ -83,16 +79,13 @@ class StationRepository
     }
 
     /**
-     * @param int $idConfiguration
-     * @param string $dateBegin
-     * @param string $dateEnd
      *
      * @return array
      * @throws \Exception
      */
     public function fetchStationData(int $idConfiguration, string $dateBegin, string $dateEnd): array
     {
-        $data = json_decode($this->stationRemoteRepository->fetchStationData($idConfiguration, $dateBegin, $dateEnd));
+        $data = json_decode($this->stationRemoteRepository->fetchStationData($idConfiguration, $dateBegin, $dateEnd), null, 512, JSON_THROW_ON_ERROR);
         $this->setUrlExecuted();
 
         return $data;
@@ -107,7 +100,7 @@ class StationRepository
                 return $data;
             }
 
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
 
         }
 
@@ -120,9 +113,7 @@ class StationRepository
             $indices = $this->getIndices();
         }
 
-        $data = array_filter($indices, function ($station) use ($idConfig) {
-            return (int)$station->config_id === $idConfig;
-        });
+        $data = array_filter($indices, fn($station) => (int)$station->config_id === $idConfig);
 
         return SortUtils::sortByDate($data);
     }
