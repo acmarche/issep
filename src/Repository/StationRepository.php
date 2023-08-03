@@ -7,6 +7,7 @@ use AcMarche\Issep\Utils\SortUtils;
 class StationRepository
 {
     public array $urlsExecuted = [];
+    public array $stationsToKeep = [1, 5, 8, 10, 11, 12, 13, 16, 18];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
@@ -37,7 +38,9 @@ class StationRepository
         foreach ($stationsTmp as $station) {
             preg_match($regex, (string) $station->nom, $x);
             $station->number = $x[1];
-            $stations[] = $station;
+            if (in_array($station->number, $this->stationsToKeep)) {
+                $stations[] = $station;
+            }
         }
 
         return SortUtils::sortStations($stations);
