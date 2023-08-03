@@ -14,7 +14,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 trait ConnectionTrait
 {
-    private ?HttpClientInterface $httpClient= null;
+    private ?HttpClientInterface $httpClient = null;
     private ?string $base_uri = null;
     public ?string $urlExecuted = null;
 
@@ -45,7 +45,7 @@ trait ConnectionTrait
 
             return $response->getContent();
         } catch (ClientException|ClientExceptionInterface|RedirectionExceptionInterface|ServerExceptionInterface|TransportExceptionInterface $exception) {
-            throw  new Exception($exception->getMessage(), $exception->getCode(), $exception);
+            throw new Exception($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -53,5 +53,4 @@ trait ConnectionTrait
     {
         var_dump($response->getInfo('debug'));
     }
-
 }

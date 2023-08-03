@@ -2,6 +2,8 @@
 
 namespace AcMarche\Issep\Repository;
 
+use stdClass;
+use Exception;
 use AcMarche\Issep\Utils\SortUtils;
 
 class StationRepository
@@ -46,7 +48,7 @@ class StationRepository
         return SortUtils::sortStations($stations);
     }
 
-    public function getStation(int $idStation): ?\stdClass
+    public function getStation(int $idStation): ?stdClass
     {
         $stations = $this->getStations();
 
@@ -60,7 +62,7 @@ class StationRepository
 
     /**
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function getConfigs(): array
     {
@@ -84,7 +86,7 @@ class StationRepository
     /**
      *
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchStationData(int $idConfiguration, string $dateBegin, string $dateEnd): array
     {
@@ -102,9 +104,7 @@ class StationRepository
             if (is_array($data)) {
                 return $data;
             }
-
-        } catch (\Exception) {
-
+        } catch (Exception) {
         }
 
         return [];
@@ -116,7 +116,7 @@ class StationRepository
             $indices = $this->getIndices();
         }
 
-        $data = array_filter($indices, fn($station) => (int)$station->config_id === $idConfig);
+        $data = array_filter($indices, fn ($station) => (int)$station->config_id === $idConfig);
 
         return SortUtils::sortByDate($data);
     }

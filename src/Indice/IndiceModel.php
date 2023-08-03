@@ -10,5 +10,4 @@ class IndiceModel
 
     //   public ?string $color = null;
     //   public ?string $label = null;
-
 }

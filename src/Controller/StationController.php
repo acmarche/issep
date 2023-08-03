@@ -2,17 +2,20 @@
 
 namespace AcMarche\Issep\Controller;
 
+use stdClass;
+use DateTime;
+use Exception;
 use AcMarche\Issep\Form\StationDataSearchType;
 use AcMarche\Issep\Indice\IndiceEnum;
 use AcMarche\Issep\Indice\IndiceUtils;
 use AcMarche\Issep\Repository\StationRepository;
 use AcMarche\Issep\Utils\FeuUtils;
 use AcMarche\Issep\Utils\SortUtils;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route(path: '/')]
 #[IsGranted('ROLE_CAPTEUR')]
@@ -42,7 +45,7 @@ class StationController extends AbstractController
     public function indice(string $id): Response
     {
         $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof \stdClass) {
+        if (!$station instanceof stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -78,7 +81,7 @@ class StationController extends AbstractController
     {
         $station = $this->stationRepository->getStation($id);
 
-        if (!$station instanceof \stdClass) {
+        if (!$station instanceof stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -99,10 +102,10 @@ class StationController extends AbstractController
     #[Route(path: '/data/{id}', name: 'issep_data')]
     public function data(Request $request, string $id): Response
     {
-        $args = ['dateBegin' => new \DateTime('-2 weeks'), 'dateEnd' => new \DateTime()];
+        $args = ['dateBegin' => new DateTime('-2 weeks'), 'dateEnd' => new DateTime()];
 
         $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof \stdClass) {
+        if (!$station instanceof stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -122,8 +125,8 @@ class StationController extends AbstractController
                     $dateBegin->format('Y-m-d'),
                     $dateEnd->format('Y-m-d')
                 );
-            } catch (\Exception $exception) {
-                $this->addFlash('danger', 'Erreur lors de la recherche: '.$exception->getMessage());
+            } catch (Exception $exception) {
+                $this->addFlash('danger', 'Erreur lors de la recherche: ' . $exception->getMessage());
             }
         }
 
@@ -165,7 +168,7 @@ class StationController extends AbstractController
     public function h24(string $id): Response
     {
         $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof \stdClass) {
+        if (!$station instanceof stdClass) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');

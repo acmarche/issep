@@ -2,31 +2,33 @@
 
 namespace AcMarche\Issep\Repository;
 
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Exception;
 class StationRemoteRepository
 {
     use ConnectionTrait;
 
     public function fetchStations(): ?string
     {
-        if (!$this->httpClient instanceof \Symfony\Contracts\HttpClient\HttpClientInterface) {
+        if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri.'/point');
+        return $this->executeRequest($this->base_uri . '/point');
     }
 
     /**
      *
      * @return string|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchConfigs(): ?string
     {
-        if (!$this->httpClient instanceof \Symfony\Contracts\HttpClient\HttpClientInterface) {
+        if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri.'/point/config/lastdata');
+        return $this->executeRequest($this->base_uri . '/point/config/lastdata');
     }
 
     /**
@@ -36,24 +38,23 @@ class StationRemoteRepository
      * @param string $dateEnd 2022-05-18
      *
      * @return string|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchStationData(int $idCapteur, string $dateBegin, string $dateEnd): ?string
     {
-        if (!$this->httpClient instanceof \Symfony\Contracts\HttpClient\HttpClientInterface) {
+        if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri.'/config/'.$idCapteur.'/data/start/'.$dateBegin.'/end/'.$dateEnd);
+        return $this->executeRequest($this->base_uri . '/config/' . $idCapteur . '/data/start/' . $dateBegin . '/end/' . $dateEnd);
     }
 
     public function fetchIndices(): ?string
     {
-        if (!$this->httpClient instanceof \Symfony\Contracts\HttpClient\HttpClientInterface) {
+        if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri.'/euaqi');
+        return $this->executeRequest($this->base_uri . '/euaqi');
     }
-
 }

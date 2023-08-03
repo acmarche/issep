@@ -8,7 +8,7 @@ class SortUtils
     {
         usort(
             $stations,
-            fn($a, $b) => $a->nom <=> $b->nom
+            fn ($a, $b) => $a->nom <=> $b->nom
         );
         return $stations;
     }

@@ -13,7 +13,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->autoconfigure()
         ->private();
 
-    $services->load('AcMarche\Issep\\', __DIR__.'/../src/*')
-        ->exclude([__DIR__.'/../src/{Entity,Tests}']);
-
+    $services->load('AcMarche\Issep\\', __DIR__ . '/../src/*')
+        ->exclude([__DIR__ . '/../src/{Entity,Tests}']);
 };
