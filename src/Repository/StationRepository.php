@@ -9,7 +9,7 @@ use AcMarche\Issep\Utils\SortUtils;
 class StationRepository
 {
     public array $urlsExecuted = [];
-    public array $stationsToKeep = [1, 5, 8, 10, 11, 12, 13, 16, 18];
+    public array $stationsToKeep = [1, 5, 10, 11, 13, 16, 18];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
