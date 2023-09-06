@@ -10,7 +10,7 @@ class StationRepository
 {
     public array $urlsExecuted = [];
     //public array $stationsToKeep = [1, 5, 10, 11, 13, 16, 18];
-    public array $stationsToKeep = [15, 17, 26, 27, 13, 30, 66];
+    public array $stationsToKeep = [15, 17, 26, 27, 13, 24, 66];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
