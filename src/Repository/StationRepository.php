@@ -9,8 +9,7 @@ use AcMarche\Issep\Utils\SortUtils;
 class StationRepository
 {
     public array $urlsExecuted = [];
-    //public array $stationsToKeep = [1, 5, 10, 11, 13, 16, 18];
-    public array $stationsToKeep = [15, 17, 26, 27, 24, 30, 66];
+    public array $stationsToKeep = [15, 17, 18, 26, 27, 30, 66];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
@@ -91,7 +90,12 @@ class StationRepository
      */
     public function fetchStationData(int $idConfiguration, string $dateBegin, string $dateEnd): array
     {
-        $data = json_decode($this->stationRemoteRepository->fetchStationData($idConfiguration, $dateBegin, $dateEnd), null, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode(
+            $this->stationRemoteRepository->fetchStationData($idConfiguration, $dateBegin, $dateEnd),
+            null,
+            512,
+            JSON_THROW_ON_ERROR
+        );
         $this->setUrlExecuted();
 
         return $data;
@@ -117,7 +121,7 @@ class StationRepository
             $indices = $this->getIndices();
         }
 
-        $data = array_filter($indices, fn ($station) => (int)$station->config_id === $idConfig);
+        $data = array_filter($indices, fn($station) => (int)$station->config_id === $idConfig);
 
         return SortUtils::sortByDate($data);
     }
