@@ -104,7 +104,7 @@ class StationRepository
     public function getIndices(): array
     {
         try {
-            $data = json_decode($this->stationRemoteRepository->fetchIndices(), flags: JSON_THROW_ON_ERROR);
+            $data = json_decode($this->stationRemoteRepository->fetchIndicesBelAqi(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
                 return $data;

@@ -7,9 +7,9 @@ class FeuUtils
     public static function color(int $aqiValue): string
     {
         return match ($aqiValue) {
-            1, 2 => 'green',
-            3, 4 => 'yellow',
-            5, 6 => 'red',
+            1, 2, 3, 4 => 'green',
+            5, 6, 7 => 'yellow',
+            8, 9, 10 => 'red',
             default => 'grey',
         };
     }

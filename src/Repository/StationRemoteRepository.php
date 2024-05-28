@@ -49,6 +49,11 @@ class StationRemoteRepository
         return $this->executeRequest($this->base_uri . '/config/' . $idCapteur . '/data/start/' . $dateBegin . '/end/' . $dateEnd);
     }
 
+    /**
+     * @deprecated
+     * @return string|null
+     * @throws Exception
+     */
     public function fetchIndices(): ?string
     {
         if (!$this->httpClient instanceof HttpClientInterface) {
@@ -56,5 +61,14 @@ class StationRemoteRepository
         }
 
         return $this->executeRequest($this->base_uri . '/euaqi');
+    }
+
+    public function fetchIndicesBelAqi(): ?string
+    {
+        if (!$this->httpClient instanceof HttpClientInterface) {
+            $this->connect();
+        }
+
+        return $this->executeRequest($this->base_uri . '/belaqi');
     }
 }

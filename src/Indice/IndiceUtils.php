@@ -31,7 +31,7 @@ class IndiceUtils
 
     private function createIndiceModel(object $indice): IndiceModel
     {
-        $t = IndiceEnum::colorByIndice($indice->aqi_value)->color();
+        $t = IndiceEnum::colorByIndice($indice->aqi_value);
         $d = IndiceEnum::labelByIndice($indice->aqi_value);
 
         return new IndiceModel($t, $d);
