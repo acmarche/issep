@@ -21,14 +21,15 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_CAPTEUR')]
 class StationController extends AbstractController
 {
-    public function __construct(private readonly StationRepository $stationRepository, private readonly IndiceUtils $indiceUtils)
-    {
-    }
+    public function __construct(
+        private readonly StationRepository $stationRepository,
+        private readonly IndiceUtils $indiceUtils,
+    ) {}
 
     #[Route(path: '/', name: 'issep_home')]
     public function index(): Response
     {
-        $stations = $this->stationRepository->getStations();
+        $stations = $this->stationRepository->getStations(false);
         $indices = $this->stationRepository->getIndices();
         $this->indiceUtils->setIndices($stations, $indices);
 
@@ -37,7 +38,7 @@ class StationController extends AbstractController
             [
                 'stations' => $stations,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
-            ]
+            ],
         );
     }
 
@@ -72,7 +73,7 @@ class StationController extends AbstractController
                 'indices' => $indices,
                 'colors' => $colors,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
-            ]
+            ],
         );
     }
 
@@ -95,7 +96,7 @@ class StationController extends AbstractController
                 'station' => $station,
                 'config' => $config,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
-            ]
+            ],
         );
     }
 
@@ -123,10 +124,10 @@ class StationController extends AbstractController
                 $data = $this->stationRepository->fetchStationData(
                     $station->id_configuration,
                     $dateBegin->format('Y-m-d'),
-                    $dateEnd->format('Y-m-d')
+                    $dateEnd->format('Y-m-d'),
                 );
             } catch (Exception $exception) {
-                $this->addFlash('danger', 'Erreur lors de la recherche: ' . $exception->getMessage());
+                $this->addFlash('danger', 'Erreur lors de la recherche: '.$exception->getMessage());
             }
         }
 
@@ -138,7 +139,7 @@ class StationController extends AbstractController
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
                 'form' => $form->createView(),
                 'search' => $form->isSubmitted(),
-            ]
+            ],
         );
     }
 
@@ -160,7 +161,7 @@ class StationController extends AbstractController
             [
                 'stations' => $stations,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
-            ]
+            ],
         );
     }
 
@@ -185,7 +186,7 @@ class StationController extends AbstractController
                 'station' => $station,
                 'indices' => $indices,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
-            ]
+            ],
         );
     }
 
@@ -196,7 +197,7 @@ class StationController extends AbstractController
             '@AcMarcheIssep/station/legend.html.twig',
             [
                 'indices' => IndiceEnum::cases(),
-            ]
+            ],
         );
     }
 }

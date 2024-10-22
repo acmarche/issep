@@ -9,11 +9,8 @@ use AcMarche\Issep\Utils\SortUtils;
 class StationRepository
 {
     public array $urlsExecuted = [];
-    public array $stationsToKeep = [15, 17, 18, 26, 27, 30, 66];
 
-    public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
-    {
-    }
+    public function __construct(private readonly StationRemoteRepository $stationRemoteRepository) {}
 
     /**
      *  +"id": "19"
@@ -29,18 +26,21 @@ class StationRepository
      * +"config_start": "2021-06-14 00:00:00.000"
      * +"config_end": "2023-01-01 00:00:00.000"
      * @return array
+     * @throws \JsonException
      */
-    public function getStations(): array
+    public function getStations(bool $excludeSinsin = true): array
     {
         $stations = [];
         $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations(), null, 512, JSON_THROW_ON_ERROR);
         $this->setUrlExecuted();
 
-        $regex = "#\((\d{1,2})\)#";
         foreach ($stationsTmp as $station) {
-            //preg_match($regex, (string) $station->nom, $x);
-            //$station->number = $x[1];
-            if (in_array($station->id, $this->stationsToKeep)) {
+            if ($excludeSinsin) {
+                if ($station['id'] === StationsEnum::SINSIN->value) {
+                    continue;
+                }
+            }
+            if (in_array($station->id, StationsEnum::stationsToKeep())) {
                 $stations[] = $station;
             }
         }
@@ -50,7 +50,7 @@ class StationRepository
 
     public function getStation(int $idStation): ?stdClass
     {
-        $stations = $this->getStations();
+        $stations = $this->getStations(false);
 
         $key = array_search($idStation, array_column($stations, 'id'));
         if ($key === false) {
@@ -94,7 +94,7 @@ class StationRepository
             $this->stationRemoteRepository->fetchStationData($idConfiguration, $dateBegin, $dateEnd),
             null,
             512,
-            JSON_THROW_ON_ERROR
+            JSON_THROW_ON_ERROR,
         );
         $this->setUrlExecuted();
 
