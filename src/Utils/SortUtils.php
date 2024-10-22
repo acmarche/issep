@@ -2,8 +2,15 @@
 
 namespace AcMarche\Issep\Utils;
 
+use AcMarche\Issep\Model\Indice;
+use AcMarche\Issep\Model\Station;
+
 class SortUtils
 {
+    /**
+     * @param Station[] $stations
+     * @return Station[]
+     */
     public static function sortStations(array $stations): array
     {
         usort(
@@ -13,7 +20,12 @@ class SortUtils
         return $stations;
     }
 
-    public static function sortByDate(array $indices, string $order = 'DESC')
+    /**
+     * @param Indice[] $indices
+     * @param string $order
+     * @return Indice[]
+     */
+    public static function sortByDate(array $indices, string $order = 'DESC'): array
     {
         usort(
             $indices,
@@ -32,11 +44,16 @@ class SortUtils
         return $indices;
     }
 
+    /**
+     * @param Indice[] $indices
+     * @param string $date
+     * @return Indice[]
+     */
     public static function filterByDate(array $indices, string $date): array
     {
         $data = [];
         foreach ($indices as $row) {
-            if (str_contains((string) $row->ts, $date)) {
+            if (str_contains($row->ts->format('Y-m-d'), $date)) {
                 $data[] = $row;
             }
         }

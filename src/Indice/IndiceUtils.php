@@ -2,38 +2,43 @@
 
 namespace AcMarche\Issep\Indice;
 
+use AcMarche\Issep\Model\Indice;
+use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Repository\StationRepository;
+use AcMarche\Issep\Repository\StationsEnum;
 
 class IndiceUtils
 {
-    public function __construct(private readonly StationRepository $stationRepository)
-    {
-    }
+    public function __construct(private readonly StationRepository $stationRepository) {}
 
     public function setIndicesEnum(array $indices)
     {
         foreach ($indices as $indice) {
-            $indice->indice = $this->createIndiceModel($indice);
+            $indice->indice = $this->setColorOnIndice($indice);
         }
     }
 
-    public function setIndices(array $stations, array $indices): void
+    /**
+     * @param Station[] $stations
+     * @return void
+     */
+    public function setIndices(array $stations): void
     {
-        array_map(function ($station) use ($indices) {
-            $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration, $indices);
-            $station->indice = $station->last_indice = null;
+        $sinsinStation = $this->stationRepository->getStation(StationsEnum::SINSIN->value);
+        array_map(function ($station) {
+            $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+
             if ($station->indices !== []) {
-                $station->indice = $this->createIndiceModel($station->indices[0]);
-                $station->last_indice = $station->indices[0];
+                $station->last_indice = $this->setColorOnIndice($station->indices[0]);
             }
         }, $stations);
     }
 
-    private function createIndiceModel(object $indice): IndiceModel
+    private function setColorOnIndice(Indice $indice): Indice
     {
-        $t = IndiceEnum::colorByIndice($indice->aqi_value);
-        $d = IndiceEnum::labelByIndice($indice->aqi_value);
+        $indice->color = IndiceEnum::colorByIndice($indice->aqi_value);
+        $indice->label = IndiceEnum::labelByIndice($indice->aqi_value);
 
-        return new IndiceModel($t, $d);
+        return $indice;
     }
 }

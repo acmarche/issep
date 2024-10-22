@@ -31,11 +31,11 @@
                             </a>
                         </td>
                         <td class="d-flex align-items-center justify-content-evenly">
-                            {% if station.indice %}
+                            {% if station.last_indice %}
                                 <a href="{{ path('issep_indice', {'id': station.id}) }}">
-                                    {{ station.indice.label }}
+                                    {{ station.last_indice.label }}
                                 </a>
-                                {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.indice} %}
+                                {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.last_indice} %}
                             {% endif %}
                         </td>
                         <td>

@@ -2,45 +2,35 @@
 
 namespace AcMarche\Issep\Repository;
 
-use stdClass;
-use Exception;
+use AcMarche\Issep\Model\Indice;
+use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Utils\SortUtils;
+use Carbon\Carbon;
+use Exception;
 
 class StationRepository
 {
     public array $urlsExecuted = [];
+    /**
+     * @var Indice[] $indices
+     */
+    public array $indices = [];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository) {}
 
     /**
-     *  +"id": "19"
-     * +"nom": "Avenue de France (12)"
-     * +"id_reseau": "12"
-     * +"x": "219342"
-     * +"y": "102043"
-     * +"lat": "50.225957999999999"
-     * +"lon": "5.3392559999999998"
-     * +"altitude": null
-     * +"h": null
-     * +"id_configuration": "19"
-     * +"config_start": "2021-06-14 00:00:00.000"
-     * +"config_end": "2023-01-01 00:00:00.000"
-     * @return array
+     * @return Station[]
      * @throws \JsonException
      */
-    public function getStations(bool $excludeSinsin = true): array
+    public function getStations(): array
     {
         $stations = [];
         $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations(), null, 512, JSON_THROW_ON_ERROR);
         $this->setUrlExecuted();
 
-        foreach ($stationsTmp as $station) {
-            if ($excludeSinsin) {
-                if ($station['id'] === StationsEnum::SINSIN->value) {
-                    continue;
-                }
-            }
-            if (in_array($station->id, StationsEnum::stationsToKeep())) {
+        foreach ($stationsTmp as $stationTmp) {
+            if (in_array($stationTmp->id, StationsEnum::stationsToKeep())) {
+                $station = Station::fromStd($stationTmp);
                 $stations[] = $station;
             }
         }
@@ -48,9 +38,9 @@ class StationRepository
         return SortUtils::sortStations($stations);
     }
 
-    public function getStation(int $idStation): ?stdClass
+    public function getStation(int $idStation): ?Station
     {
-        $stations = $this->getStations(false);
+        $stations = $this->getStations();
 
         $key = array_search($idStation, array_column($stations, 'id'));
         if ($key === false) {
@@ -85,8 +75,11 @@ class StationRepository
 
     /**
      *
+     * @param int $idConfiguration
+     * @param string $dateBegin
+     * @param string $dateEnd
      * @return array
-     * @throws Exception
+     * @throws \JsonException
      */
     public function fetchStationData(int $idConfiguration, string $dateBegin, string $dateEnd): array
     {
@@ -101,27 +94,43 @@ class StationRepository
         return $data;
     }
 
+    /**
+     * @return Indice[]
+     */
     public function getIndices(): array
     {
+        $this->indices = [];
         try {
+            $today = new \DateTime();
+            $today->modify('-6 MONTHS');
             $data = json_decode($this->stationRemoteRepository->fetchIndicesBelAqi(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
-                return $data;
+                foreach ($data as $item) {
+                    $date = Carbon::parse($item->ts)->toDateTime();
+                    if ($date->format('Y-m-d') < $today->format('Y-m-d')) {
+                        continue;
+                    }
+                    $this->indices[] = Indice::createFromStd($item);
+                }
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
+            dump($e->getMessage());
         }
 
-        return [];
+        return $this->indices;
     }
 
-    public function getIndicesByStation(int $idConfig, array $indices = []): array
+    /**
+     * @param int $idConfig
+     * @return Indice[]
+     */
+    public function getIndicesByStation(int $idConfig): array
     {
-        if (count($indices) < 1) {
-            $indices = $this->getIndices();
+        if (count($this->indices) === 0) {
+            $this->getIndices();
         }
-
-        $data = array_filter($indices, fn($station) => (int)$station->config_id === $idConfig);
+        $data = array_filter($this->indices, fn($station) => (int)$station->config_id === $idConfig);
 
         return SortUtils::sortByDate($data);
     }

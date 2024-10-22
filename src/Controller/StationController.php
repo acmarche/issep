@@ -29,9 +29,8 @@ class StationController extends AbstractController
     #[Route(path: '/', name: 'issep_home')]
     public function index(): Response
     {
-        $stations = $this->stationRepository->getStations(false);
-        $indices = $this->stationRepository->getIndices();
-        $this->indiceUtils->setIndices($stations, $indices);
+        $stations = $this->stationRepository->getStations();
+        $this->indiceUtils->setIndices($stations);
 
         return $this->render(
             '@AcMarcheIssep/station/index.html.twig',

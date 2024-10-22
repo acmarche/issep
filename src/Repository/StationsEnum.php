@@ -17,9 +17,6 @@ enum StationsEnum: int
     {
         $stations = [];
         foreach (self::cases() as $station) {
-            if ($station->value === 1023) {
-                continue;
-            }
             $stations[] = $station->value;
         }
 
