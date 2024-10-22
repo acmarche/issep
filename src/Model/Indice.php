@@ -9,6 +9,7 @@ class Indice
     public ?\DateTime $ts = null;
     public ?string $color = null;
     public ?string $label = null;
+    public bool $isFixed = false;
 
     public function __construct(public string $config_id, public string $aqi_value, public string $point_name) {}
 

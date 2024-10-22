@@ -52,7 +52,7 @@ class StationController extends AbstractController
         }
 
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
-        $this->indiceUtils->setIndicesEnum($indices);
+        $this->indiceUtils->setColorOnAllIndices($indices);
 
         $lastIndice = null;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
@@ -177,7 +177,7 @@ class StationController extends AbstractController
         $today = date('Y-m-d');
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
         $indices = SortUtils::filterByDate($indices, $today);
-        $this->indiceUtils->setIndicesEnum($indices);
+        $this->indiceUtils->setColorOnAllIndices($indices);
 
         return $this->render(
             '@AcMarcheIssep/station/h24.html.twig',

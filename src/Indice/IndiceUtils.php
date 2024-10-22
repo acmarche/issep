@@ -11,13 +11,6 @@ class IndiceUtils
 {
     public function __construct(private readonly StationRepository $stationRepository) {}
 
-    public function setIndicesEnum(array $indices)
-    {
-        foreach ($indices as $indice) {
-            $indice->indice = $this->setColorOnIndice($indice);
-        }
-    }
-
     /**
      * @param Station[] $stations
      * @return void
@@ -25,13 +18,24 @@ class IndiceUtils
     public function setIndices(array $stations): void
     {
         $sinsinStation = $this->stationRepository->getStation(StationsEnum::SINSIN->value);
-        array_map(function ($station) {
-            $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+        $indices = $this->stationRepository->getIndicesByStation($sinsinStation->id_configuration);
+        $lastSinsin = $indices[0];
 
+        array_map(function ($station) use ($lastSinsin) {
+            $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
             if ($station->indices !== []) {
-                $station->last_indice = $this->setColorOnIndice($station->indices[0]);
+                $last = $station->indices[0];
+                $this->fixNoData($last, $lastSinsin->aqi_value);
+                $station->last_indice = $this->setColorOnIndice($last);
             }
         }, $stations);
+    }
+
+    public function setColorOnAllIndices(array $indices)
+    {
+        foreach ($indices as $indice) {
+            $indice->indice = $this->setColorOnIndice($indice);
+        }
     }
 
     private function setColorOnIndice(Indice $indice): Indice
@@ -40,5 +44,13 @@ class IndiceUtils
         $indice->label = IndiceEnum::labelByIndice($indice->aqi_value);
 
         return $indice;
+    }
+
+    private function fixNoData(Indice $indice, int $aquiValueSinsinStation): void
+    {
+        if ($indice->aqi_value == IndiceEnum::NO_DATA->value) {
+            $indice->aqi_value = $aquiValueSinsinStation;
+            $indice->isFixed = true;
+        }
     }
 }

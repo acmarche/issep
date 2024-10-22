@@ -35,6 +35,9 @@
                                 <a href="{{ path('issep_indice', {'id': station.id}) }}">
                                     {{ station.last_indice.label }}
                                 </a>
+                                {% if station.last_indice.isFixed %}
+                                    <span class="mx-2 badge badge-warning">Corrigé</span>
+                                {% endif %}
                                 {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.last_indice} %}
                             {% endif %}
                         </td>
