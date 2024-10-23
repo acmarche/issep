@@ -19,6 +19,9 @@ class IndiceUtils
     {
         $sinsinStation = $this->stationRepository->getStation(StationsEnum::SINSIN->value);
         $indices = $this->stationRepository->getIndicesByStation($sinsinStation->id_configuration);
+        if(count($indices) === 0) {
+            return;
+        }
         $lastSinsin = $indices[0];
 
         array_map(function ($station) use ($lastSinsin) {
@@ -31,7 +34,7 @@ class IndiceUtils
         }, $stations);
     }
 
-    public function setColorOnAllIndices(array $indices)
+    public function setColorOnAllIndices(array $indices): void
     {
         foreach ($indices as $indice) {
             $indice->indice = $this->setColorOnIndice($indice);
