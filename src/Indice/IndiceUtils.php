@@ -48,9 +48,10 @@ class IndiceUtils
 
     private function fixNoData(Indice $indice, int $aquiValueSinsinStation): void
     {
-        if ($indice->aqi_value == IndiceEnum::NO_DATA->value) {
-            $indice->aqi_value = $aquiValueSinsinStation;
+        if ($indice->aqi_value == IndiceEnum::NO_VALID->value) {
             $indice->isFixed = true;
+            $indice->originalValue = $indice->aqi_value;
+            $indice->aqi_value = $aquiValueSinsinStation;
         }
     }
 }

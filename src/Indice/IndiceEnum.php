@@ -15,6 +15,7 @@ enum IndiceEnum: int
     case VERY_POOR = 9;
     case APPALLING = 10;
     case NO_DATA = 0;
+    case NO_VALID = -1;
 
     public function color(): string
     {

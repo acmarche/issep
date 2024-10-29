@@ -14,7 +14,6 @@
                     <th>Indice</th>
                     <th>Configuration</th>
                     <th>Données</th>
-                    <th>Ids (Jf)</th>
                 </tr>
                 </thead>
                 {% for station in stations %}
@@ -30,15 +29,17 @@
                                 Aujourd'hui
                             </a>
                         </td>
-                        <td class="d-flex align-items-center justify-content-evenly">
+                        <td class="d-flex flex-column align-items-center">
                             {% if station.last_indice %}
-                                <a href="{{ path('issep_indice', {'id': station.id}) }}">
-                                    {{ station.last_indice.label }}
-                                </a>
+                                <div  class="d-flex justify-content-between">
+                                    <a href="{{ path('issep_indice', {'id': station.id}) }}">
+                                        {{ station.last_indice.label }}
+                                    </a>
+                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.last_indice} %}
+                                </div>
                                 {% if station.last_indice.isFixed %}
-                                    <span class="mx-2 badge badge-warning">Corrigé</span>
+                                    <span class="mx-2 badge text-bg-warning badge-warning">Corrigé ({{ station.last_indice.originalValue }})</span>
                                 {% endif %}
-                                {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.last_indice} %}
                             {% endif %}
                         </td>
                         <td>
@@ -46,9 +47,6 @@
                         </td>
                         <td>
                             <a href="{{ path('issep_data', {'id': station.id}) }}">Relevés</a>
-                        </td>
-                        <td class="text-muted">
-                            id: {{ station.id }}, config {{ station.id_configuration }}, reseau {{ station.id_reseau }}
                         </td>
                     </tr>
                 {% endfor %}
