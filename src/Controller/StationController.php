@@ -146,8 +146,7 @@ class StationController extends AbstractController
     public function map(): Response
     {
         $stations = $this->stationRepository->getStations();
-        $indices = $this->stationRepository->getIndices();
-        $this->indiceUtils->setIndices($stations, $indices);
+        $this->indiceUtils->setIndices($stations);
         foreach ($stations as $station) {
             $station->color = FeuUtils::colorGrey();
             if ($station->last_indice) {
