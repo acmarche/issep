@@ -41,12 +41,10 @@ class StationRepository
     public function getStation(int $idStation): ?Station
     {
         $stations = $this->getStations();
-
         $key = array_search($idStation, array_column($stations, 'id'));
         if ($key === false) {
             return null;
         }
-
         return $stations[$key] ?? null;
     }
 

@@ -2,7 +2,7 @@
 
 namespace AcMarche\Issep\Controller;
 
-use stdClass;
+use AcMarche\Issep\Model\Station;
 use DateTime;
 use Exception;
 use AcMarche\Issep\Form\StationDataSearchType;
@@ -42,10 +42,10 @@ class StationController extends AbstractController
     }
 
     #[Route(path: '/indice/{id}', name: 'issep_indice')]
-    public function indice(string $id): Response
+    public function indice(int $id): Response
     {
         $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof stdClass) {
+        if (!$station instanceof Station) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -77,11 +77,11 @@ class StationController extends AbstractController
     }
 
     #[Route(path: '/config/{id}', name: 'issep_config')]
-    public function config(string $id): Response
+    public function config(int $id): Response
     {
         $station = $this->stationRepository->getStation($id);
 
-        if (!$station instanceof stdClass) {
+        if (!$station instanceof Station) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -100,12 +100,12 @@ class StationController extends AbstractController
     }
 
     #[Route(path: '/data/{id}', name: 'issep_data')]
-    public function data(Request $request, string $id): Response
+    public function data(Request $request, int $id): Response
     {
         $args = ['dateBegin' => new DateTime('-2 weeks'), 'dateEnd' => new DateTime()];
 
         $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof stdClass) {
+        if (!$station instanceof Station) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
@@ -164,10 +164,10 @@ class StationController extends AbstractController
     }
 
     #[Route(path: '/h24/{id}', name: 'issep_h24')]
-    public function h24(string $id): Response
+    public function h24(int $id): Response
     {
         $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof stdClass) {
+        if (!$station instanceof Station) {
             $this->addFlash('danger', 'Station non trouvée');
 
             return $this->redirectToRoute('issep_home');
