@@ -27,7 +27,7 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>Date</th>
-                                <td>{{ lastIndice.ts }}</td>
+                                <td>{{ lastIndice.ts|format_date('full') }}</td>
                             </tr>
                             <tr>
                                 <th>BelAQI</th>
@@ -36,13 +36,13 @@
                             <tr>
                                 <th>Label</th>
                                 <td>
-                                    {{ lastIndice.indice.label }}
+                                    {{ lastIndice.label }}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Couleur</th>
                                 <td>
-                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': lastIndice.indice} %}
+                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': lastIndice} %}
                                 </td>
                             </tr>
                         </table>

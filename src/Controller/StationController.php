@@ -2,6 +2,7 @@
 
 namespace AcMarche\Issep\Controller;
 
+use AcMarche\Issep\Model\Indice;
 use AcMarche\Issep\Model\Station;
 use DateTime;
 use Exception;
@@ -54,6 +55,9 @@ class StationController extends AbstractController
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
         $this->indiceUtils->setColorOnAllIndices($indices);
 
+        /**
+         * @var null|Indice $lastIndice
+         */
         $lastIndice = null;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
         if ($indices !== []) {
@@ -175,6 +179,7 @@ class StationController extends AbstractController
 
         $today = date('Y-m-d');
         $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+
         $indices = SortUtils::filterByDate($indices, $today);
         $this->indiceUtils->setColorOnAllIndices($indices);
 
@@ -183,6 +188,7 @@ class StationController extends AbstractController
             [
                 'station' => $station,
                 'indices' => $indices,
+                'today' => $today,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ],
         );

@@ -8,7 +8,7 @@
     <h3 class="card-header">Aujourd'hui {{ station.nom }}</h3>
     <div class="card-body" style="z-index: 3;">
         {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
-        {% include '@AcMarcheIssep/station/_historique.html.twig' %}
+        {% include '@AcMarcheIssep/station/_historique.html.twig' with {'date':today} %}
     </div>
 </div>
 {% endblock %}
