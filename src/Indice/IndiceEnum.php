@@ -27,10 +27,11 @@ enum IndiceEnum: int
             IndiceEnum::AVERAGE => '#FFFF00',
             IndiceEnum::INSUFFICIENT => '#FFA500',
             IndiceEnum::QUITE_POOR => '#FF4500',
-            IndiceEnum:: POOR => '#FF0000',
+            IndiceEnum::POOR => '#FF0000',
             IndiceEnum::VERY_POOR => '#8B0000',
             IndiceEnum::APPALLING => '#8B008B',
             IndiceEnum::NO_DATA => '#A6ACAF',
+            default => IndiceEnum::NO_DATA->color(),
         };
     }
 
@@ -48,6 +49,7 @@ enum IndiceEnum: int
             IndiceEnum::VERY_POOR => 'Très mauvais',
             IndiceEnum::APPALLING => 'Exécrable',
             IndiceEnum::NO_DATA => 'Non valide',
+            default => IndiceEnum::NO_DATA->color(),
         };
     }
 
