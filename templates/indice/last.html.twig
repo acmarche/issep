@@ -1,0 +1,36 @@
+{% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">{{ indices|length }} indices sur les 6 derniers mois</h3>
+        <div class="card-body">
+            {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Config ID</th>
+                    <th>Nom</th>
+                    <th>Date</th>
+                    <th>AqiValue</th>
+                </tr>
+                </thead>
+                {% for indice in indices %}
+                    <tr>
+                        <td>
+                            {{ indice.config_id }}
+                        </td>
+                        <td>
+                            {{ indice.point_name }}
+                        </td>
+                        <td>
+                            {{ indice.ts|format_date('full') }}
+                        </td>
+                        <td>
+                            {{ indice.aqi_value }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

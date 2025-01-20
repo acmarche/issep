@@ -33,10 +33,13 @@ class StationController extends AbstractController
         $stations = $this->stationRepository->getStations();
         $this->indiceUtils->setIndices($stations);
 
+        $indices = $this->stationRepository->indices;
+
         return $this->render(
             '@AcMarcheIssep/station/index.html.twig',
             [
                 'stations' => $stations,
+                'indices' => $indices,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ],
         );

@@ -17,21 +17,27 @@ class IndiceUtils
      */
     public function setIndices(array $stations): void
     {
-        $sinsinStation = $this->stationRepository->getStation(StationsEnum::SINSIN->value);
-        $indices = $this->stationRepository->getIndicesByStation($sinsinStation->id_configuration);
-        if(count($indices) === 0) {
-            return;
-        }
-        $lastSinsin = $indices[0];
+        $indices = $this->sinsinIndices();
+        $lastSinsin = count($indices) ? $indices[0] : null;
 
         array_map(function ($station) use ($lastSinsin) {
             $station->indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
             if ($station->indices !== []) {
                 $last = $station->indices[0];
-                $this->fixNoData($last, $lastSinsin->aqi_value);
+                $this->fixNoData($last, $lastSinsin);
                 $station->last_indice = $this->setColorOnIndice($last);
             }
         }, $stations);
+    }
+
+    /**
+     * @return array|Indice[]
+     */
+    public function sinsinIndices(): array
+    {
+        $sinsinStation = $this->stationRepository->getStation(StationsEnum::SINSIN->value);
+
+        return $this->stationRepository->getIndicesByStation($sinsinStation->id_configuration);
     }
 
     public function setColorOnAllIndices(array $indices): void
@@ -49,12 +55,15 @@ class IndiceUtils
         return $indice;
     }
 
-    private function fixNoData(Indice $indice, int $aquiValueSinsinStation): void
+    private function fixNoData(Indice $indice, ?Indice $sinsinindice): void
     {
+        if (!$sinsinindice) {
+            return;
+        }
         if ($indice->aqi_value == IndiceEnum::NO_VALID->value) {
             $indice->isFixed = true;
             $indice->originalValue = $indice->aqi_value;
-            $indice->aqi_value = $aquiValueSinsinStation;
+            $indice->aqi_value = $sinsinindice->aqi_value;
         }
     }
 }
