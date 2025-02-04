@@ -143,7 +143,7 @@ class StationController extends AbstractController
                 'station' => $station,
                 'data' => $data,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
-                'form' => $form->createView(),
+                'form' => $form,
                 'search' => $form->isSubmitted(),
             ],
         );
