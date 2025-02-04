@@ -8,6 +8,12 @@
         <h3 class="card-header">Indice de {{ station.nom }}</h3>
         <div class="card-body" style="z-index: 3;">
 
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>Id config</th>
+                    <td>{{ station.id_configuration }}</td>
+                </tr>
+            </table>
             {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
 
             <div class="alert alert-info" style="position: relative; z-index: 1">
@@ -27,7 +33,9 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>Date</th>
-                                <td>{{ lastIndice.ts|format_date('full') }}</td>
+                                <td>
+                                    {{ lastIndice.ts|format_date('full') }}
+                                </td>
                             </tr>
                             <tr>
                                 <th>BelAQI</th>

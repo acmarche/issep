@@ -9,7 +9,11 @@
         </thead>
         {% for indiceH in indices %}
             <tr>
-                <td>{{ indiceH.ts|format_date('full') }}</td>
+                <td>
+                    {{ dump(indiceH) }}
+                    {{ indiceH.ts|format_date('full') }}<br/>
+                    <span class="text-muted">config: {{ indiceH.config_id }}</span>
+                </td>
                 <td>{{ indiceH.aqi_value }}</td>
                 <td>
                     {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': indiceH} %}
@@ -18,5 +22,6 @@
         {% endfor %}
     </table>
 {% else %}
-    <p class="text-warning">Aucun indice trouvé {% if date is defined %} à la date {{ date|date('d-m-Y')}} {% endif %}</p>
+    <p class="text-warning">Aucun indice
+        trouvé {% if date is defined %} à la date {{ date|date('d-m-Y') }} {% endif %}</p>
 {% endif %}
