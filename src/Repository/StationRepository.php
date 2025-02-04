@@ -99,14 +99,14 @@ class StationRepository
     {
         $this->indices = [];
         try {
-            $today = new \DateTime();
-            $today->modify('-6 MONTHS');
+            $sixMonthsAgo = new \DateTime();
+            $sixMonthsAgo->modify('-6 MONTHS');
             $data = json_decode($this->stationRemoteRepository->fetchIndicesBelAqi(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
                     $date = Carbon::parse($item->ts)->toDateTime();
-                    if ($date->format('Y-m-d') < $today->format('Y-m-d')) {
+                    if ($date->format('Y-m-d') < $sixMonthsAgo->format('Y-m-d')) {
                         continue;
                     }
                     $this->indices[] = Indice::createFromStd($item);
