@@ -10,7 +10,6 @@
         {% for indiceH in indices %}
             <tr>
                 <td>
-                    {{ dump(indiceH) }}
                     {{ indiceH.ts|format_date('full') }}<br/>
                     <span class="text-muted">config: {{ indiceH.config_id }}</span>
                 </td>
