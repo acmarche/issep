@@ -10,7 +10,7 @@
         {% for indiceH in indices %}
             <tr>
                 <td>
-                    {{ indiceH.ts|format_date('full') }}<br/>
+                    {{ indiceH.ts|format_datetime('full', 'medium') }}<br/>
                     <span class="text-muted">config: {{ indiceH.config_id }}</span>
                 </td>
                 <td>{{ indiceH.aqi_value }}</td>

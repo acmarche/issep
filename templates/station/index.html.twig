@@ -44,7 +44,7 @@
                         </td>
                         <td>
                             {% if station.last_indice %}
-                                {{ station.last_indice.ts|format_date('full') }}
+                                {{ station.last_indice.ts|format_datetime('full', 'medium') }}
                             {% endif %}
                         </td>
                         <td>
