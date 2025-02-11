@@ -4,9 +4,12 @@ namespace AcMarche\Issep\Repository;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Exception;
+
 class StationRemoteRepository
 {
     use ConnectionTrait;
+
+    private string $token;
 
     public function fetchStations(): ?string
     {
@@ -14,7 +17,7 @@ class StationRemoteRepository
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri . '/point');
+        return $this->executeRequest($this->base_uri.'/locations');
     }
 
     /**
@@ -28,12 +31,13 @@ class StationRemoteRepository
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri . '/point/config/lastdata');
+        return $this->executeRequest($this->base_uri.'/lastdata');
     }
 
     /**
-     *  config/58/data/start/2022-01-01/end/2022-05-18
+     * https://opendata.issep.be/env/air/api/microsensor/config/10388/start/2025-02-03/end/2025-02-04
      *
+     * @param int $idCapteur
      * @param string $dateBegin 2022-01-01
      * @param string $dateEnd 2022-05-18
      *
@@ -46,13 +50,14 @@ class StationRemoteRepository
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri . '/config/' . $idCapteur . '/data/start/' . $dateBegin . '/end/' . $dateEnd);
+        return $this->executeRequest($this->base_uri.'/config/'.$idCapteur.'/data/start/'.$dateBegin.'/end/'.$dateEnd);
     }
 
     /**
-     * @deprecated
+     * https://opendata.issep.be/env/air/api/microsensor/marche/lastbelaqi
      * @return string|null
      * @throws Exception
+     * @deprecated
      */
     public function fetchIndices(): ?string
     {
@@ -60,7 +65,7 @@ class StationRemoteRepository
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri . '/euaqi');
+        return $this->executeRequest($this->base_uri.'/lastbelaqi');
     }
 
     public function fetchIndicesBelAqi(): ?string
@@ -69,6 +74,6 @@ class StationRemoteRepository
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri . '/belaqi');
+        return $this->executeRequest($this->base_uri.'/lastbelaqi');
     }
 }

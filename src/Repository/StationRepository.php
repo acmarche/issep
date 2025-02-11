@@ -25,7 +25,7 @@ class StationRepository
     public function getStations(): array
     {
         $stations = [];
-        $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations(), null, 512, JSON_THROW_ON_ERROR);
+        $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations(), false, 512, JSON_THROW_ON_ERROR);
         $this->setUrlExecuted();
 
         foreach ($stationsTmp as $stationTmp) {
@@ -45,6 +45,7 @@ class StationRepository
         if ($key === false) {
             return null;
         }
+
         return $stations[$key] ?? null;
     }
 
@@ -128,7 +129,7 @@ class StationRepository
         if (count($this->indices) === 0) {
             $this->getIndices();
         }
-        $data = array_filter($this->indices, fn($station) => (int)$station->config_id === $idConfig);
+        $data = array_filter($this->indices, fn($station) => (int)$station->configId === $idConfig);
 
         return SortUtils::sortByDate($data);
     }

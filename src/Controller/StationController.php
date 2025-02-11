@@ -2,16 +2,16 @@
 
 namespace AcMarche\Issep\Controller;
 
-use AcMarche\Issep\Model\Indice;
-use AcMarche\Issep\Model\Station;
-use DateTime;
-use Exception;
 use AcMarche\Issep\Form\StationDataSearchType;
 use AcMarche\Issep\Indice\IndiceEnum;
 use AcMarche\Issep\Indice\IndiceUtils;
+use AcMarche\Issep\Model\Indice;
+use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Repository\StationRepository;
 use AcMarche\Issep\Utils\FeuUtils;
 use AcMarche\Issep\Utils\SortUtils;
+use DateTime;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,10 +30,16 @@ class StationController extends AbstractController
     #[Route(path: '/', name: 'issep_home')]
     public function index(): Response
     {
-        $stations = $this->stationRepository->getStations();
-        $this->indiceUtils->setIndices($stations);
+        try {
+            $stations = $this->stationRepository->getStations();
 
-        $indices = $this->stationRepository->indices;
+            $this->indiceUtils->setIndices($stations);
+
+            $indices = $this->stationRepository->indices;
+        } catch (\Exception $e) {
+            $stations = $indices = [];
+            $this->addFlash('danger', $e->getMessage());
+        }
 
         return $this->render(
             '@AcMarcheIssep/station/index.html.twig',
@@ -55,7 +61,7 @@ class StationController extends AbstractController
             return $this->redirectToRoute('issep_home');
         }
 
-        $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+        $indices = $this->stationRepository->getIndicesByStation($station->idConfiguration);
         $this->indiceUtils->setColorOnAllIndices($indices);
 
         /**
@@ -65,7 +71,7 @@ class StationController extends AbstractController
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
         if ($indices !== []) {
             $lastIndice = $indices[0];
-            $colorClass = FeuUtils::color($lastIndice->aqi_value);
+            $colorClass = FeuUtils::color($lastIndice->aqiValue);
             if (isset($colors[$colorClass])) {
                 $colors[$colorClass] = $colorClass;
             }
@@ -94,7 +100,7 @@ class StationController extends AbstractController
             return $this->redirectToRoute('issep_home');
         }
 
-        $config = $this->stationRepository->getConfig($station->id_configuration);
+        $config = $this->stationRepository->getConfig($station->idConfiguration);
 
         return $this->render(
             '@AcMarcheIssep/station/config.html.twig',
@@ -128,7 +134,7 @@ class StationController extends AbstractController
             $dateEnd = $dataForm['dateEnd'];
             try {
                 $data = $this->stationRepository->fetchStationData(
-                    $station->id_configuration,
+                    $station->idConfiguration,
                     $dateBegin->format('Y-m-d'),
                     $dateEnd->format('Y-m-d'),
                 );
@@ -157,7 +163,7 @@ class StationController extends AbstractController
         foreach ($stations as $station) {
             $station->color = FeuUtils::colorGrey();
             if ($station->last_indice) {
-                $station->color = FeuUtils::color($station->last_indice->aqi_value);
+                $station->color = FeuUtils::color($station->last_indice->aqiValue);
             }
         }
 
@@ -181,7 +187,7 @@ class StationController extends AbstractController
         }
 
         $today = date('Y-m-d');
-        $indices = $this->stationRepository->getIndicesByStation($station->id_configuration);
+        $indices = $this->stationRepository->getIndicesByStation($station->idConfiguration);
 
         $indices = SortUtils::filterByDate($indices, $today);
         $this->indiceUtils->setColorOnAllIndices($indices);

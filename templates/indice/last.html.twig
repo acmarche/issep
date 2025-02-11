@@ -17,16 +17,16 @@
                 {% for indice in indices %}
                     <tr>
                         <td>
-                            {{ indice.config_id }}
+                            {{ indice.configId }}
                         </td>
                         <td>
-                            {{ indice.point_name }}
+                            {{ indice.pointName }}
                         </td>
                         <td>
                             {{ indice.ts|format_datetime('full','medium') }}
                         </td>
                         <td>
-                            {{ indice.aqi_value }}
+                            {{ indice.aqiValue }}
                         </td>
                     </tr>
                 {% endfor %}

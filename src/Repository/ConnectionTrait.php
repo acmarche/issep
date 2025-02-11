@@ -21,9 +21,11 @@ trait ConnectionTrait
     public function connect(): void
     {
         $this->base_uri = $_ENV['ISSEP_BASE_URI'] ?? null;
+        $this->token = $_ENV['ISSEP_TOKEN'] ?? null;
 
         $headers = [
             'verify_peer' => false,
+            'auth_bearer' => $this->token,
         ];
 
         $this->httpClient = HttpClient::create($headers);

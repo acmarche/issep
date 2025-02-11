@@ -11,9 +11,9 @@
             <tr>
                 <td>
                     {{ indiceH.ts|format_datetime('full', 'medium') }}<br/>
-                    <span class="text-muted">config: {{ indiceH.config_id }}</span>
+                    <span class="text-muted">config: {{ indiceH.configId }}</span>
                 </td>
-                <td>{{ indiceH.aqi_value }}</td>
+                <td>{{ indiceH.aqiValue }}</td>
                 <td>
                     {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': indiceH} %}
                 </td>
