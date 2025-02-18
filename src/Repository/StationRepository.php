@@ -105,7 +105,8 @@ class StationRepository
             $sixMonthsAgo = new \DateTime();
             $sixMonthsAgo->modify('-6 MONTHS');
             $data = json_decode($this->stationRemoteRepository->lastData(), flags: JSON_THROW_ON_ERROR);
-        return $data;
+
+            return $data;
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
@@ -166,6 +167,8 @@ class StationRepository
 
     private function setUrlExecuted(): void
     {
-        $this->urlsExecuted[] = $this->stationRemoteRepository->urlExecuted;
+        $this->urlsExecuted[basename(
+            $this->stationRemoteRepository->urlExecuted,
+        )] = $this->stationRemoteRepository->urlExecuted;
     }
 }
