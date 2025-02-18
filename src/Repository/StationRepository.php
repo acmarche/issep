@@ -6,16 +6,15 @@ use AcMarche\Issep\Model\AirQualityData;
 use AcMarche\Issep\Model\Indice;
 use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Utils\SortUtils;
-use Carbon\Carbon;
 use Exception;
 
 class StationRepository
 {
     public array $urlsExecuted = [];
     /**
-     * @var Indice[] $indices
+     * @var Indice[] $lastBelAqui
      */
-    public array $indices = [];
+    public array $lastBelAqui = [];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository) {}
 
@@ -96,71 +95,36 @@ class StationRepository
     }
 
     /**
-     * @return AirQualityData[]
-     */
-    public function dataDevices(): array
-    {
-        $this->indices = [];
-        try {
-            $sixMonthsAgo = new \DateTime();
-            $sixMonthsAgo->modify('-6 MONTHS');
-            $data = json_decode($this->stationRemoteRepository->lastData(), flags: JSON_THROW_ON_ERROR);
-
-            return $data;
-            $this->setUrlExecuted();
-            if (is_array($data)) {
-                foreach ($data as $item) {
-                    $date = Carbon::parse($item->ts)->toDateTime();
-                    if ($date->format('Y-m-d') < $sixMonthsAgo->format('Y-m-d')) {
-                        continue;
-                    }
-                    $this->indices[] = Indice::createFromStd($item);
-                }
-            }
-        } catch (Exception $e) {
-            dump($e->getMessage());
-        }
-
-        return $this->indices;
-    }
-
-    /**
      * @return Indice[]
      */
-    public function getIndices(): array
+    public function lastBelAqui(): array
     {
-        $this->indices = [];
+        $this->lastBelAqui = [];
         try {
-            $sixMonthsAgo = new \DateTime();
-            $sixMonthsAgo->modify('-6 MONTHS');
-            $data = json_decode($this->stationRemoteRepository->fetchIndicesBelAqi(), flags: JSON_THROW_ON_ERROR);
+            $data = json_decode($this->stationRemoteRepository->lastBelAqui(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    $date = Carbon::parse($item->ts)->toDateTime();
-                    if ($date->format('Y-m-d') < $sixMonthsAgo->format('Y-m-d')) {
-                        continue;
-                    }
-                    $this->indices[] = Indice::createFromStd($item);
+                    $this->lastBelAqui[] = Indice::createFromStd($item);
                 }
             }
         } catch (Exception $e) {
             dump($e->getMessage());
         }
 
-        return $this->indices;
+        return $this->lastBelAqui;
     }
 
     /**
      * @param int $idConfig
      * @return Indice[]
      */
-    public function getIndicesByStation(int $idConfig): array
+    public function getLastBelAquiByStation(int $idConfig): array
     {
-        if (count($this->indices) === 0) {
-            $this->getIndices();
+        if (count($this->lastBelAqui) === 0) {
+            $this->lastBelAqui();
         }
-        $data = array_filter($this->indices, fn($station) => (int)$station->configId === $idConfig);
+        $data = array_filter($this->lastBelAqui, fn($station) => (int)$station->configId === $idConfig);
 
         return SortUtils::sortByDate($data);
     }

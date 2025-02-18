@@ -68,7 +68,7 @@ class StationRemoteRepository
         return $this->executeRequest($this->base_uri.'/lastdata');
     }
 
-    public function fetchIndicesBelAqi(): ?string
+    public function lastBelAqui(): ?string
     {
         if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();

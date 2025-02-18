@@ -30,21 +30,18 @@
                             </a>
                         </td>
                         <td class="d-flex flex-column align-items-center">
-                            {% if station.last_indice %}
+                            {% if station.lastBelAqi %}
                                 <div class="d-flex justify-content-between">
                                     <a href="{{ path('issep_indice', {'id': station.id}) }}">
-                                        {{ station.last_indice.label }}
+                                        {{ station.lastBelAqi.label }}
                                     </a>
-                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.last_indice} %}
+                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.lastBelAqi} %}
                                 </div>
-                                {% if station.last_indice.isFixed %}
-                                    <span class="mx-2 badge text-bg-warning badge-warning">Corrigé ({{ station.last_indice.originalValue }})</span>
-                                {% endif %}
                             {% endif %}
                         </td>
                         <td>
-                            {% if station.last_indice %}
-                                {{ station.last_indice.ts|format_datetime('full', 'medium') }}
+                            {% if station.lastBelAqi %}
+                                {{ station.lastBelAqi.ts|format_datetime('full', 'medium') }}
                             {% endif %}
                         </td>
                         <td>

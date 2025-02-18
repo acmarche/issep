@@ -4,8 +4,11 @@ namespace AcMarche\Issep\Model;
 
 class Station
 {
-    public array $indices = [];
-    public ?Indice $last_indice = null;
+    /**
+     * @var AirQualityData[] $airQualityData
+     */
+    public array $airQualityData = [];
+    public ?Indice $lastBelAqi = null;
     public ?\DateTime $attribStart = null;
     public ?\DateTime $attribEnd = null;
     public ?string $color = null;

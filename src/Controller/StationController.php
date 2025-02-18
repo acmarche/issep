@@ -32,10 +32,7 @@ class StationController extends AbstractController
     {
         try {
             $stations = $this->stationRepository->getStations();
-
-            $this->indiceUtils->setIndices($stations);
-
-            $indices = $this->stationRepository->indices;
+            $this->indiceUtils->setLastBelAqiOnStations($stations);
         } catch (\Exception $e) {
             $stations = $indices = [];
             $this->addFlash('danger', $e->getMessage());
@@ -45,7 +42,6 @@ class StationController extends AbstractController
             '@AcMarcheIssep/station/index.html.twig',
             [
                 'stations' => $stations,
-                'indices' => $indices,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ],
         );
@@ -61,7 +57,7 @@ class StationController extends AbstractController
             return $this->redirectToRoute('issep_home');
         }
 
-        $indices = $this->stationRepository->getIndicesByStation($station->idConfiguration);
+        $indices = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
         $this->indiceUtils->setColorOnAllIndices($indices);
 
         /**
@@ -162,11 +158,11 @@ class StationController extends AbstractController
     public function map(): Response
     {
         $stations = $this->stationRepository->getStations();
-        $this->indiceUtils->setIndices($stations);
+        $this->indiceUtils->setLastBelAqiOnStations($stations);
         foreach ($stations as $station) {
             $station->color = FeuUtils::colorGrey();
-            if ($station->last_indice) {
-                $station->color = FeuUtils::color($station->last_indice->aqiValue);
+            if ($station->lastBelAqi) {
+                $station->color = FeuUtils::color($station->lastBelAqi->aqiValue);
             }
         }
 
@@ -190,7 +186,7 @@ class StationController extends AbstractController
         }
 
         $today = date('Y-m-d');
-        $indices = $this->stationRepository->getIndicesByStation($station->idConfiguration);
+        $indices = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
 
         $indices = SortUtils::filterByDate($indices, $today);
         $this->indiceUtils->setColorOnAllIndices($indices);
