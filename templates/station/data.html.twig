@@ -12,8 +12,9 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
+                        <th>Id config</th>
                         <th>Horodatage de la mesure</th>
-                        <th>Signal brut de mesure du NO (monoxyde d’azote)</th>
+                        <th>Signal brut de mesure du NO (monoxyde d'azote)</th>
                         <th>Concentration en NO exprimée en ppb (parts per billion – parts par milliard)</th>
                         <th>Signal brut de mesure du NO2 (dioxyde d’azote)</th>
                         <th>Concentration en NO2 exprimée en ppb (parts per billion – parts par milliard)</th>
@@ -32,35 +33,52 @@
                     </thead>
                     {% for releve in data %}
                         <tr>
+                            <td>{{ releve.idConfiguration }}</td>
                             <td>{{ releve.moment }}</td>
-                            <td>{{ releve.NO }}</td>
-                            <td>{{ releve.ppbNO }}</td>
-                            <td>{{ releve.NO2 }}</td>
-                            <td>
-                                {{ releve.ppbNO2 }}
-                            </td>
-                            <td>
-                                {{ releve.O3NO2 }}
-                            </td>
-                            <td>
-                                {% if releve.ppbO3NO2 is defined %}
-                                    {{ releve.ppbO3NO2 }}
-                                {% endif %}
-                            </td>
-                            <td>{{ releve.BME_t }}</td>
-                            <td>{{ releve.BME_pres }}</td>
-                            <td>{{ releve.BME_rh }}</td>
-                            <td>{{ releve.PM1 }}</td>
-                            <td>{{ releve.PM25 }}</td>
-                            <td>{{ releve.mWH_Bat }}</td>
-                            <td>{{ releve.Vbat }}</td>
-                            <td>{{ releve.mWH_PV }}</td>
-                            <td>{{ releve.Temp }}</td>
+                            <td>{{ releve.co }}</td>
+                            <td>{{ releve.no }}</td>
+                            <td>{{ releve.no2 }}</td>
+                            <td>{{ releve.o3no2 }}</td>
+                            <td>{{ releve.ppbNo }}</td>
+                            <td>{{ releve.ppbNoStatut }}</td>
+                            <td>{{ releve.ppbNo2 }}</td>
+                            <td>{{ releve.ppbNo2Statut }}</td>
+                            <td>{{ releve.ppbO3 }}</td>
+                            <td>{{ releve.ppbO3Statut }}</td>
+                            <td>{{ releve.ugpcmNo }}</td>
+                            <td>{{ releve.ugpcmNoStatut }}</td>
+                            <td>{{ releve.ugpcmNo2 }}</td>
+                            <td>{{ releve.ugpcmNo2Statut }}</td>
+                            <td>{{ releve.ugpcmO3 }}</td>
+                            <td>{{ releve.ugpcmO3Statut }}</td>
+                            <td>{{ releve.bmeT }}</td>
+                            <td>{{ releve.bmeTStatut }}</td>
+                            <td>{{ releve.bmePres }}</td>
+                            <td>{{ releve.bmePresStatut }}</td>
+                            <td>{{ releve.bmeRh }}</td>
+                            <td>{{ releve.bmeRhStatut }}</td>
+                            <td>{{ releve.pm1 }}</td>
+                            <td>{{ releve.pm1Statut }}</td>
+                            <td>{{ releve.pm25 }}</td>
+                            <td>{{ releve.pm25Statut }}</td>
+                            <td>{{ releve.pm4 }}</td>
+                            <td>{{ releve.pm4Statut }}</td>
+                            <td>{{ releve.pm10 }}</td>
+                            <td>{{ releve.pm10Statut }}</td>
+                            <td>{{ releve.vbat }}</td>
+                            <td>{{ releve.mWhBat }}</td>
+                            <td>{{ releve.mWhPv }}</td>
+                            <td>{{ releve.coRf }}</td>
+                            <td>{{ releve.noRf }}</td>
+                            <td>{{ releve.no2Rf }}</td>
+                            <td>{{ releve.o3no2Rf }}</td>
+                            <td>{{ releve.o3Rf }}</td>
+                            <td>{{ releve.pm10Rf }}</td>
+                            <td>{{ releve.vbatStatut }}</td>
                         </tr>
                     {% endfor %}
                 </table>
             {% endif %}
-
         </div>
 
     </div>

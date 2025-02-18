@@ -115,7 +115,7 @@ class StationController extends AbstractController
     #[Route(path: '/data/{id}', name: 'issep_data')]
     public function data(Request $request, int $id): Response
     {
-        $args = ['dateBegin' => new DateTime('-2 weeks'), 'dateEnd' => new DateTime()];
+        $args = ['dateBegin' => new DateTime('-1 weeks'), 'dateEnd' => new DateTime()];
 
         $station = $this->stationRepository->getStation($id);
         if (!$station instanceof Station) {
@@ -143,6 +143,8 @@ class StationController extends AbstractController
             }
         }
 
+        $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
+
         return $this->render(
             '@AcMarcheIssep/station/data.html.twig',
             [
@@ -152,6 +154,7 @@ class StationController extends AbstractController
                 'form' => $form,
                 'search' => $form->isSubmitted(),
             ],
+            $response,
         );
     }
 

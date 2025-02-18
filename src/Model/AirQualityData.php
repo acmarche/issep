@@ -2,7 +2,7 @@
 
 namespace AcMarche\Issep\Model;
 
-class Device
+class AirQualityData
 {
     public int $idConfiguration;
     public string $moment;

@@ -2,7 +2,7 @@
 
 namespace AcMarche\Issep\Repository;
 
-use AcMarche\Issep\Model\Device;
+use AcMarche\Issep\Model\AirQualityData;
 use AcMarche\Issep\Model\Indice;
 use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Utils\SortUtils;
@@ -78,7 +78,7 @@ class StationRepository
      * @param int $idConfiguration
      * @param string $dateBegin
      * @param string $dateEnd
-     * @return array
+     * @return AirQualityData[]
      * @throws \JsonException
      * @throws Exception
      */
@@ -96,7 +96,7 @@ class StationRepository
     }
 
     /**
-     * @return Device[]
+     * @return AirQualityData[]
      */
     public function dataDevices(): array
     {

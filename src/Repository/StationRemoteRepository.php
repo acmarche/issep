@@ -2,8 +2,8 @@
 
 namespace AcMarche\Issep\Repository;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Exception;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class StationRemoteRepository
 {
@@ -50,7 +50,9 @@ class StationRemoteRepository
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri.'/config/'.$idCapteur.'/data/start/'.$dateBegin.'/end/'.$dateEnd);
+        $uri = $this->removeMarcheFromUrl();
+
+        return $this->executeRequest($uri.'/config/'.$idCapteur.'/start/'.$dateBegin.'/end/'.$dateEnd);
     }
 
     /**
@@ -73,5 +75,13 @@ class StationRemoteRepository
         }
 
         return $this->executeRequest($this->base_uri.'/lastbelaqi');
+    }
+
+    private function removeMarcheFromUrl(): string
+    {
+        $parsedUrl = parse_url($this->base_uri, PHP_URL_PATH);
+        $trimmedPath = dirname($parsedUrl);
+
+        return parse_url($this->base_uri, PHP_URL_SCHEME)."://".parse_url($this->base_uri, PHP_URL_HOST).$trimmedPath;
     }
 }
