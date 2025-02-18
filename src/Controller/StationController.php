@@ -68,6 +68,11 @@ class StationController extends AbstractController
             }
         }
 
+        try {
+            $this->indiceUtils->setLastData([$station]);
+        } catch (\DateMalformedStringException $e) {
+        }
+
         return $this->render(
             '@AcMarcheIssep/station/indice.html.twig',
             [
@@ -104,8 +109,6 @@ class StationController extends AbstractController
     #[Route(path: '/data/{id}', name: 'issep_data')]
     public function data(Request $request, int $id): Response
     {
-        $args = ['dateBegin' => new DateTime('-1 weeks'), 'dateEnd' => new DateTime()];
-
         $station = $this->stationRepository->getStation($id);
         if (!$station instanceof Station) {
             $this->addFlash('danger', 'Station non trouvée');
@@ -113,6 +116,7 @@ class StationController extends AbstractController
             return $this->redirectToRoute('issep_home');
         }
 
+        $args = ['dateBegin' => new DateTime('-1 weeks'), 'dateEnd' => new DateTime()];
         $form = $this->createForm(StationDataSearchType::class, $args);
 
         $data = [];
@@ -121,6 +125,7 @@ class StationController extends AbstractController
             $dataForm = $form->getData();
             $dateBegin = $dataForm['dateBegin'];
             $dateEnd = $dataForm['dateEnd'];
+
             try {
                 $data = $this->stationRepository->fetchStationData(
                     $station->idConfiguration,
