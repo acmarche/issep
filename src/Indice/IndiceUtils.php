@@ -53,7 +53,7 @@ class IndiceUtils
         $dateBegin = date('Y-m-d');
         if (!$dateEnd) {
             $dateEnd = new \DateTime();
-            $dateEnd->modify('-1 weeks');
+            $dateEnd->modify('+1 weeks');
         }
 
         foreach ($stations as $station) {
