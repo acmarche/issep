@@ -1,21 +1,14 @@
-{% if indices|length > 0 %}
+{% if station.airQualityData|length > 0 %}
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Date</th>
-            <th>BelAQI</th>
-            <th>Couleur</th>
+            <th>Data</th>
         </tr>
         </thead>
-        {% for indiceH in indices %}
+        {% for airQualityData in station.airQualityData %}
             <tr>
                 <td>
-                    {{ indiceH.ts|format_datetime('full', 'medium') }}<br/>
-                    <span class="text-muted">config: {{ indiceH.configId }}</span>
-                </td>
-                <td>{{ indiceH.aqiValue }}</td>
-                <td>
-                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': indiceH} %}
+                    {{ dump(airQualityData) }}
                 </td>
             </tr>
         {% endfor %}

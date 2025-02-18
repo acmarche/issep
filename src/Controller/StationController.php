@@ -57,17 +57,12 @@ class StationController extends AbstractController
             return $this->redirectToRoute('issep_home');
         }
 
-        $indices = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
-        $this->indiceUtils->setColorOnAllIndices($indices);
-
-        /**
-         * @var null|Indice $lastIndice
-         */
-        $lastIndice = null;
         $colors = ['red' => '', 'yellow' => '', 'green' => ''];
-        if ($indices !== []) {
-            $lastIndice = $indices[0];
-            $colorClass = FeuUtils::color($lastIndice->aqiValue);
+        $this->indiceUtils->setLastBelAqiOnStations([$station]);
+
+        if ($station->lastBelAqi instanceof Indice) {
+            $this->indiceUtils->setColorOnIndice($station->lastBelAqi);
+            $colorClass = FeuUtils::color($station->lastBelAqi->aqiValue);
             if (isset($colors[$colorClass])) {
                 $colors[$colorClass] = $colorClass;
             }
@@ -77,8 +72,6 @@ class StationController extends AbstractController
             '@AcMarcheIssep/station/indice.html.twig',
             [
                 'station' => $station,
-                'lastIndice' => $lastIndice,
-                'indices' => $indices,
                 'colors' => $colors,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ],
