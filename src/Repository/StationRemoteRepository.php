@@ -54,18 +54,16 @@ class StationRemoteRepository
     }
 
     /**
-     * https://opendata.issep.be/env/air/api/microsensor/marche/lastbelaqi
      * @return string|null
      * @throws Exception
-     * @deprecated
      */
-    public function fetchIndices(): ?string
+    public function lastData(): ?string
     {
         if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();
         }
 
-        return $this->executeRequest($this->base_uri.'/lastbelaqi');
+        return $this->executeRequest($this->base_uri.'/lastdata');
     }
 
     public function fetchIndicesBelAqi(): ?string

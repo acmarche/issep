@@ -2,6 +2,7 @@
 
 namespace AcMarche\Issep\Repository;
 
+use AcMarche\Issep\Model\Device;
 use AcMarche\Issep\Model\Indice;
 use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Utils\SortUtils;
@@ -79,6 +80,7 @@ class StationRepository
      * @param string $dateEnd
      * @return array
      * @throws \JsonException
+     * @throws Exception
      */
     public function fetchStationData(int $idConfiguration, string $dateBegin, string $dateEnd): array
     {
@@ -91,6 +93,34 @@ class StationRepository
         $this->setUrlExecuted();
 
         return $data;
+    }
+
+    /**
+     * @return Device[]
+     */
+    public function dataDevices(): array
+    {
+        $this->indices = [];
+        try {
+            $sixMonthsAgo = new \DateTime();
+            $sixMonthsAgo->modify('-6 MONTHS');
+            $data = json_decode($this->stationRemoteRepository->lastData(), flags: JSON_THROW_ON_ERROR);
+        return $data;
+            $this->setUrlExecuted();
+            if (is_array($data)) {
+                foreach ($data as $item) {
+                    $date = Carbon::parse($item->ts)->toDateTime();
+                    if ($date->format('Y-m-d') < $sixMonthsAgo->format('Y-m-d')) {
+                        continue;
+                    }
+                    $this->indices[] = Indice::createFromStd($item);
+                }
+            }
+        } catch (Exception $e) {
+            dump($e->getMessage());
+        }
+
+        return $this->indices;
     }
 
     /**
