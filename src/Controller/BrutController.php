@@ -26,8 +26,8 @@ class BrutController extends AbstractController
         return $this->render(
             '@AcMarcheIssep/indice/brut.html.twig',
             [
-                'indices' => json_decode($indices),
-                'stations' => json_decode($stations),
+                'indices' => $indices,
+                'stations' => $stations,
             ],
         );
     }
