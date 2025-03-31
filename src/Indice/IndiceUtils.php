@@ -8,7 +8,9 @@ use AcMarche\Issep\Repository\StationRepository;
 
 class IndiceUtils
 {
-    public function __construct(private readonly StationRepository $stationRepository) {}
+    public function __construct(private readonly StationRepository $stationRepository)
+    {
+    }
 
     /**
      * @param Station[] $stations
@@ -18,10 +20,7 @@ class IndiceUtils
     {
         array_map(function ($station) {
             $data = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
-            if ($data !== []) {
-                $last = $data[0];
-                $station->lastBelAqi = $this->setColorOnIndice($last);
-            }
+            $station->lastBelAqi = $this->setColorOnIndice($data);
         }, $stations);
     }
 
@@ -32,12 +31,14 @@ class IndiceUtils
         }
     }
 
-    public function setColorOnIndice(?Indice $indice): Indice
+    public function setColorOnIndice(?Indice $indice): ?Indice
     {
-        if ($indice) {
-            $indice->color = IndiceEnum::colorByIndice($indice->aqiValue);
-            $indice->label = IndiceEnum::labelByIndice($indice->aqiValue);
+        if (!$indice) {
+            return null;
         }
+
+        $indice->color = IndiceEnum::colorByIndice($indice->aqiValue);
+        $indice->label = IndiceEnum::labelByIndice($indice->aqiValue);
 
         return $indice;
     }

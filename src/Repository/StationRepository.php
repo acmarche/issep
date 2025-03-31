@@ -12,11 +12,13 @@ class StationRepository
 {
     public array $urlsExecuted = [];
     /**
-     * @var Indice[] $lastBelAqui
+     * @var Indice[] $lastAllBelAqui
      */
-    public array $lastBelAqui = [];
+    public array $lastAllBelAqui = [];
 
-    public function __construct(private readonly StationRemoteRepository $stationRemoteRepository) {}
+    public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
+    {
+    }
 
     /**
      * @return Station[]
@@ -26,6 +28,7 @@ class StationRepository
     {
         $stations = [];
         $stationsTmp = json_decode($this->stationRemoteRepository->fetchStations(), false, 512, JSON_THROW_ON_ERROR);
+
         $this->setUrlExecuted();
 
         foreach ($stationsTmp as $stationTmp) {
@@ -97,36 +100,36 @@ class StationRepository
     /**
      * @return Indice[]
      */
-    public function lastBelAqui(): array
+    public function lastAllBelAqui(): array
     {
-        $this->lastBelAqui = [];
+        $this->lastAllBelAqui = [];
         try {
             $data = json_decode($this->stationRemoteRepository->lastBelAqui(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    $this->lastBelAqui[] = Indice::createFromStd($item);
+                    $this->lastAllBelAqui[] = Indice::createFromStd($item);
                 }
             }
         } catch (Exception $e) {
             dump($e->getMessage());
         }
 
-        return $this->lastBelAqui;
+        return $this->lastAllBelAqui;
     }
 
-    /**
-     * @param int $idConfig
-     * @return Indice[]
-     */
-    public function getLastBelAquiByStation(int $idConfig): array
+    public function getLastBelAquiByStation(int $idConfig): ?Indice
     {
-        if (count($this->lastBelAqui) === 0) {
-            $this->lastBelAqui();
+        if (count($this->lastAllBelAqui) === 0) {
+            $this->lastAllBelAqui();
         }
-        $data = array_filter($this->lastBelAqui, fn($station) => (int)$station->configId === $idConfig);
 
-        return SortUtils::sortByDate($data);
+        $data = array_filter($this->lastAllBelAqui, fn($station) => (int)$station->configId === $idConfig);
+        if (count($data) === 0) {
+            return null;
+        } else {
+            return $data[array_key_last($data)];
+        }
     }
 
     private function setUrlExecuted(): void

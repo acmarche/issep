@@ -5,79 +5,9 @@
         <h3 class="card-header">Données de {{ station.nom }}</h3>
 
         <div class="card-body">
-            {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
-            {% include '@AcMarcheIssep/station/_search.html.twig' %}
 
             {% if search %}
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Id config</th>
-                        <th>Horodatage de la mesure</th>
-                        <th>Signal brut de mesure du NO (monoxyde d'azote)</th>
-                        <th>Concentration en NO exprimée en ppb (parts per billion – parts par milliard)</th>
-                        <th>Signal brut de mesure du NO2 (dioxyde d’azote)</th>
-                        <th>Concentration en NO2 exprimée en ppb (parts per billion – parts par milliard)</th>
-                        <th>Signal brut de mesure de l’O3 (ozone)</th>
-                        <th>Concentration en O3 exprimée en ppb (parts per billion – parts par milliard)</th>
-                        <th>Température exprimée en °C</th>
-                        <th>Pression atmosphérique exprimée en Pa</th>
-                        <th>Humidité relative exprimée en %</th>
-                        <th>Concentration en particules de type PM1 exprimée en µg/m3</th>
-                        <th>Concentration en particules de type PM2.5 exprimée en µg/m3</th>
-                        <th>Énergie consommée par la batterie (mWh)</th>
-                        <th>Tension de la batterie (V)</th>
-                        <th>Énergie fournie par le panneau photovoltaïque (mWh)</th>
-                        <th>Signal brut de mesure de la température par un 2nd capteur</th>
-                    </tr>
-                    </thead>
-                    {% for releve in data %}
-                        <tr>
-                            <td>{{ releve.idConfiguration }}</td>
-                            <td>{{ releve.moment }}</td>
-                            <td>{{ releve.co }}</td>
-                            <td>{{ releve.no }}</td>
-                            <td>{{ releve.no2 }}</td>
-                            <td>{{ releve.o3no2 }}</td>
-                            <td>{{ releve.ppbNo }}</td>
-                            <td>{{ releve.ppbNoStatut }}</td>
-                            <td>{{ releve.ppbNo2 }}</td>
-                            <td>{{ releve.ppbNo2Statut }}</td>
-                            <td>{{ releve.ppbO3 }}</td>
-                            <td>{{ releve.ppbO3Statut }}</td>
-                            <td>{{ releve.ugpcmNo }}</td>
-                            <td>{{ releve.ugpcmNoStatut }}</td>
-                            <td>{{ releve.ugpcmNo2 }}</td>
-                            <td>{{ releve.ugpcmNo2Statut }}</td>
-                            <td>{{ releve.ugpcmO3 }}</td>
-                            <td>{{ releve.ugpcmO3Statut }}</td>
-                            <td>{{ releve.bmeT }}</td>
-                            <td>{{ releve.bmeTStatut }}</td>
-                            <td>{{ releve.bmePres }}</td>
-                            <td>{{ releve.bmePresStatut }}</td>
-                            <td>{{ releve.bmeRh }}</td>
-                            <td>{{ releve.bmeRhStatut }}</td>
-                            <td>{{ releve.pm1 }}</td>
-                            <td>{{ releve.pm1Statut }}</td>
-                            <td>{{ releve.pm25 }}</td>
-                            <td>{{ releve.pm25Statut }}</td>
-                            <td>{{ releve.pm4 }}</td>
-                            <td>{{ releve.pm4Statut }}</td>
-                            <td>{{ releve.pm10 }}</td>
-                            <td>{{ releve.pm10Statut }}</td>
-                            <td>{{ releve.vbat }}</td>
-                            <td>{{ releve.mWhBat }}</td>
-                            <td>{{ releve.mWhPv }}</td>
-                            <td>{{ releve.coRf }}</td>
-                            <td>{{ releve.noRf }}</td>
-                            <td>{{ releve.no2Rf }}</td>
-                            <td>{{ releve.o3no2Rf }}</td>
-                            <td>{{ releve.o3Rf }}</td>
-                            <td>{{ releve.pm10Rf }}</td>
-                            <td>{{ releve.vbatStatut }}</td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                {% include '@AcMarcheIssep/station/_historique.html.twig' %}
             {% endif %}
         </div>
 

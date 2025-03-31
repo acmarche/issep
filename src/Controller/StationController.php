@@ -9,7 +9,6 @@ use AcMarche\Issep\Model\Indice;
 use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Repository\StationRepository;
 use AcMarche\Issep\Utils\FeuUtils;
-use AcMarche\Issep\Utils\SortUtils;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,7 +24,8 @@ class StationController extends AbstractController
     public function __construct(
         private readonly StationRepository $stationRepository,
         private readonly IndiceUtils $indiceUtils,
-    ) {}
+    ) {
+    }
 
     #[Route(path: '/', name: 'issep_home')]
     public function index(): Response
@@ -34,7 +34,7 @@ class StationController extends AbstractController
             $stations = $this->stationRepository->getStations();
             $this->indiceUtils->setLastBelAqiOnStations($stations);
         } catch (\Exception $e) {
-            $stations = $indices = [];
+            $stations = [];
             $this->addFlash('danger', $e->getMessage());
         }
 
@@ -184,17 +184,29 @@ class StationController extends AbstractController
         }
 
         $today = date('Y-m-d');
-        $indices = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
+        $dateEnd = new DateTime();
+        $dateEnd->modify('+1 day');
 
-        $indices = SortUtils::filterByDate($indices, $today);
-        $this->indiceUtils->setColorOnAllIndices($indices);
+        $indice = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
+        $this->indiceUtils->setColorOnIndice($indice);
+
+        try {
+            $data = $this->stationRepository->fetchStationData(
+                $station->idConfiguration,
+                $today,
+                $dateEnd->format('Y-m-d')
+            );
+        } catch (\JsonException $e) {
+            $this->addFlash('danger', 'Erreur lors de la recherche: '.$e->getMessage());
+            $data = [];
+        }
 
         return $this->render(
             '@AcMarcheIssep/station/h24.html.twig',
             [
                 'station' => $station,
-                'indices' => $indices,
-                'today' => $today,
+                'indice' => $indice,
+                'data' => $data,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ],
         );

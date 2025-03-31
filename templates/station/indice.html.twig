@@ -14,48 +14,17 @@
                     <td>{{ station.idConfiguration }}</td>
                 </tr>
             </table>
-            {% include '@AcMarcheIssep/_urlexecuted.html.twig' %}
 
             <div class="alert alert-info" style="position: relative; z-index: 1">
-                <a href="https://www.irceline.be/fr/qualite-de-lair/mesures/belaqi-indice-de-la-qualite-de-lair/information" target="_blank">Cet indice varie de 1 à 10</a>
+                <a href="https://www.irceline.be/fr/qualite-de-lair/mesures/belaqi-indice-de-la-qualite-de-lair/information"
+                   target="_blank">Cet indice varie de 1 à 10</a>
                 <br>
                 Cliquez sur <a href="https://airindex.eea.europa.eu/AQI/index.html">"About the European Air Quality
                     Index" pour plus d'informations sur cet indice</a><br>
             </div>
 
             {% if station.lastBelAqi %}
-                <div class="row">
-                    <div class="col-6 p-5">
-                        {% include '@AcMarcheIssep/station/_feu.html.twig' %}
-                    </div>
-                    <div class="col-6">
-                        <h4 class="text-success">Dernier relevé</h4>
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Date</th>
-                                <td>
-                                    {{ station.lastBelAqi.ts|format_datetime('full', 'medium') }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>BelAQI</th>
-                                <td>{{ station.lastBelAqi.aqiValue }}</td>
-                            </tr>
-                            <tr>
-                                <th>Label</th>
-                                <td>
-                                    {{ station.lastBelAqi.label }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Couleur</th>
-                                <td>
-                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.lastBelAqi} %}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+                {% include '@AcMarcheIssep/indice/_belaqi_details.html.twig' %}
             {% else %}
                 <p>Pas de dernier indice</p>
             {% endif %}
