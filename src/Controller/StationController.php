@@ -72,11 +72,10 @@ class StationController extends AbstractController
     #[Route(path: '/search', name: 'issep_search')]
     public function search(Request $request): Response
     {
-        $args = ['dateBegin' => new DateTime('-1 weeks'), 'dateEnd' => new DateTime()];
+        $args = ['dateBegin' => new DateTime('-4 days'), 'dateEnd' => new DateTime()];
         $form = $this->createForm(StationDataSearchType::class, $args);
 
         $data = [];
-        $station = null;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $dataForm = $form->getData();
