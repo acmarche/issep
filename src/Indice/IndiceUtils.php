@@ -19,7 +19,7 @@ class IndiceUtils
     public function setLastBelAqiOnStations(array $stations): void
     {
         array_map(function ($station) {
-            $data = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
+            $data = $this->stationRepository->lastBelAqiByStation($station->idConfiguration);
             $station->lastBelAqi = $this->setColorOnIndice($data);
         }, $stations);
     }

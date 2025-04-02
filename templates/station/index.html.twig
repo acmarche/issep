@@ -9,10 +9,11 @@
                 <tr>
                     <th>Numéro</th>
                     <th>Nom</th>
-                    <th>Aujourd'hui</th>
+                    <th>Derniers relevés</th>
                     <th>Indice</th>
+                    <th>Couleur</th>
                     <th>Dernier relevé</th>
-                    <th>Données</th>
+                    <th>Configuration</th>
                 </tr>
                 </thead>
                 {% for station in stations %}
@@ -25,17 +26,17 @@
                         </td>
                         <td>
                             <a href="{{ path('issep_h24', {'id': station.id}) }}">
-                                Aujourd'hui
+                                Consulter
                             </a>
                         </td>
                         <td class="d-flex flex-column align-items-center">
                             {% if station.lastBelAqi %}
-                                <div class="d-flex justify-content-between">
-                                    <a href="{{ path('issep_indice', {'id': station.id}) }}">
-                                        {{ station.lastBelAqi.label }}
-                                    </a>
-                                    {% include '@AcMarcheIssep/station/_color.html.twig' with {'indice': station.lastBelAqi} %}
-                                </div>
+                                {{ station.lastBelAqi.label }} ({{ station.lastBelAqi.aqiValue }})
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if station.lastBelAqi %}
+                                {% include '@AcMarcheIssep/station/_color.html.twig' with {'belAqi': station.lastBelAqi} %}
                             {% endif %}
                         </td>
                         <td>
@@ -44,7 +45,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{ path('issep_data', {'id': station.id}) }}">Relevés</a>
+                            <a href="{{ path('issep_config', {'id': station.id}) }}">Config</a>
                         </td>
                     </tr>
                 {% endfor %}

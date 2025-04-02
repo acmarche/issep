@@ -19,7 +19,7 @@ class IndiceController extends AbstractController
     #[Route(path: '/last', name: 'issep_indice_last')]
     public function index(): Response
     {
-        $indices = $this->stationRepository->lastAllBelAqui();
+        $indices = $this->stationRepository->lastBelAqi();
 
         return $this->render(
             '@AcMarcheIssep/indice/last.html.twig',

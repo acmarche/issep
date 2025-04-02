@@ -1,0 +1,23 @@
+<h4 class="text-success">Historique des relevés</h4>
+<table class="table table-bordered">
+    <tr>
+        <th>Date</th>
+        <th>BelAQI</th>
+        <th>Label</th>
+        <th>Couleur</th>
+    </tr>
+    {% for belAqi in belAqis %}
+        <tr>
+            <td>
+                {{ belAqi.ts|format_datetime('full', 'medium') }}
+            </td>
+            <td>{{ belAqi.aqiValue }}</td>
+            <td>
+                {{ belAqi.label }}
+            </td>
+            <td>
+                {% include '@AcMarcheIssep/station/_color.html.twig' %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

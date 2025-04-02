@@ -21,7 +21,7 @@ class BrutController extends AbstractController
     public function index(): Response
     {
         $stations = $this->stationRemoteRepository->fetchStations();
-        $indices = $this->stationRemoteRepository->lastBelAqui();
+        $indices = $this->stationRemoteRepository->lastBelAqi();
 
         return $this->render(
             '@AcMarcheIssep/indice/brut.html.twig',

@@ -55,26 +55,22 @@ class StationRemoteRepository
         return $this->executeRequest($uri.'/config/'.$idCapteur.'/start/'.$dateBegin.'/end/'.$dateEnd);
     }
 
-    /**
-     * @return string|null
-     * @throws Exception
-     */
-    public function lastData(): ?string
-    {
-        if (!$this->httpClient instanceof HttpClientInterface) {
-            $this->connect();
-        }
-
-        return $this->executeRequest($this->base_uri.'/lastdata');
-    }
-
-    public function lastBelAqui(): ?string
+    public function lastBelAqi(): ?string
     {
         if (!$this->httpClient instanceof HttpClientInterface) {
             $this->connect();
         }
 
         return $this->executeRequest($this->base_uri.'/lastbelaqi');
+    }
+
+    public function belAqi(): ?string
+    {
+        if (!$this->httpClient instanceof HttpClientInterface) {
+            $this->connect();
+        }
+
+        return $this->executeRequest($this->base_uri.'/belaqi');
     }
 
     private function removeMarcheFromUrl(): string

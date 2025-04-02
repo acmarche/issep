@@ -5,7 +5,6 @@ namespace AcMarche\Issep\Controller;
 use AcMarche\Issep\Form\StationDataSearchType;
 use AcMarche\Issep\Indice\IndiceEnum;
 use AcMarche\Issep\Indice\IndiceUtils;
-use AcMarche\Issep\Model\Indice;
 use AcMarche\Issep\Model\Station;
 use AcMarche\Issep\Repository\StationRepository;
 use AcMarche\Issep\Utils\FeuUtils;
@@ -47,42 +46,6 @@ class StationController extends AbstractController
         );
     }
 
-    #[Route(path: '/indice/{id}', name: 'issep_indice')]
-    public function indice(int $id): Response
-    {
-        $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof Station) {
-            $this->addFlash('danger', 'Station non trouvée');
-
-            return $this->redirectToRoute('issep_home');
-        }
-
-        $colors = ['red' => '', 'yellow' => '', 'green' => ''];
-        $this->indiceUtils->setLastBelAqiOnStations([$station]);
-
-        if ($station->lastBelAqi instanceof Indice) {
-            $this->indiceUtils->setColorOnIndice($station->lastBelAqi);
-            $colorClass = FeuUtils::color($station->lastBelAqi->aqiValue);
-            if (isset($colors[$colorClass])) {
-                $colors[$colorClass] = $colorClass;
-            }
-        }
-
-        try {
-            $this->indiceUtils->setLastData([$station]);
-        } catch (\DateMalformedStringException $e) {
-        }
-
-        return $this->render(
-            '@AcMarcheIssep/station/indice.html.twig',
-            [
-                'station' => $station,
-                'colors' => $colors,
-                'urlsExecuted' => $this->stationRepository->urlsExecuted,
-            ],
-        );
-    }
-
     #[Route(path: '/config/{id}', name: 'issep_config')]
     public function config(int $id): Response
     {
@@ -106,29 +69,24 @@ class StationController extends AbstractController
         );
     }
 
-    #[Route(path: '/data/{id}', name: 'issep_data')]
-    public function data(Request $request, int $id): Response
+    #[Route(path: '/search', name: 'issep_search')]
+    public function search(Request $request): Response
     {
-        $station = $this->stationRepository->getStation($id);
-        if (!$station instanceof Station) {
-            $this->addFlash('danger', 'Station non trouvée');
-
-            return $this->redirectToRoute('issep_home');
-        }
-
         $args = ['dateBegin' => new DateTime('-1 weeks'), 'dateEnd' => new DateTime()];
         $form = $this->createForm(StationDataSearchType::class, $args);
 
         $data = [];
+        $station = null;
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $dataForm = $form->getData();
             $dateBegin = $dataForm['dateBegin'];
             $dateEnd = $dataForm['dateEnd'];
+            $station = $dataForm['station'];
 
             try {
                 $data = $this->stationRepository->fetchStationData(
-                    $station->idConfiguration,
+                    $station,
                     $dateBegin->format('Y-m-d'),
                     $dateEnd->format('Y-m-d'),
                 );
@@ -136,13 +94,11 @@ class StationController extends AbstractController
                 $this->addFlash('danger', 'Erreur lors de la recherche: '.$exception->getMessage());
             }
         }
-
         $response = new Response(null, $form->isSubmitted() ? Response::HTTP_ACCEPTED : Response::HTTP_OK);
 
         return $this->render(
-            '@AcMarcheIssep/station/data.html.twig',
+            '@AcMarcheIssep/station/search.html.twig',
             [
-                'station' => $station,
                 'data' => $data,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
                 'form' => $form,
@@ -187,8 +143,10 @@ class StationController extends AbstractController
         $dateEnd = new DateTime();
         $dateEnd->modify('+1 day');
 
-        $indice = $this->stationRepository->getLastBelAquiByStation($station->idConfiguration);
-        $this->indiceUtils->setColorOnIndice($indice);
+        $belAqi = $this->stationRepository->lastBelAqiByStation($station->idConfiguration);
+        $this->indiceUtils->setColorOnIndice($belAqi);
+        $belAqis = $this->stationRepository->belAqiByStation($station->idConfiguration);
+        $this->indiceUtils->setColorOnAllIndices($belAqis);
 
         try {
             $data = $this->stationRepository->fetchStationData(
@@ -205,7 +163,8 @@ class StationController extends AbstractController
             '@AcMarcheIssep/station/h24.html.twig',
             [
                 'station' => $station,
-                'indice' => $indice,
+                'belAqi' => $belAqi,
+                'belAqis' => $belAqis,
                 'data' => $data,
                 'urlsExecuted' => $this->stationRepository->urlsExecuted,
             ],

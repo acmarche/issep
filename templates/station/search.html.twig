@@ -1,0 +1,25 @@
+{% extends '@AcMarcheIssep/layout.html.twig' %}
+{% block body %}
+
+    <div class="card">
+        <h3 class="card-header">Recherche de données brutes</h3>
+
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="row">
+                <div class="col">{{ form_row(form.station) }}</div>
+                <div class="col">{{ form_row(form.dateBegin) }}</div>
+                <div class="col">{{ form_row(form.dateEnd) }}</div>
+            </div>
+            <button class="btn btn-primary" type="submit"><i class="ti ti-search"></i> Rechercher</button>
+            {{ form_end(form) }}
+
+            {% if search %}
+                {% include '@AcMarcheIssep/station/_data.html.twig' %}
+            {% endif %}
+        </div>
+
+    </div>
+
+{% endblock %}

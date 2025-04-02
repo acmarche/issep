@@ -12,9 +12,13 @@ class StationRepository
 {
     public array $urlsExecuted = [];
     /**
-     * @var Indice[] $lastAllBelAqui
+     * @var Indice[] $lastBelAqi
      */
-    public array $lastAllBelAqui = [];
+    public array $lastBelAqi = [];
+    /**
+     * @var Indice[] $belAqi
+     */
+    public array $belAqi = [];
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
@@ -100,36 +104,70 @@ class StationRepository
     /**
      * @return Indice[]
      */
-    public function lastAllBelAqui(): array
+    public function lastBelAqi(): array
     {
-        $this->lastAllBelAqui = [];
+        $this->lastBelAqi = [];
         try {
-            $data = json_decode($this->stationRemoteRepository->lastBelAqui(), flags: JSON_THROW_ON_ERROR);
+            $data = json_decode($this->stationRemoteRepository->lastBelAqi(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    $this->lastAllBelAqui[] = Indice::createFromStd($item);
+                    $this->lastBelAqi[] = Indice::createFromStd($item);
                 }
             }
         } catch (Exception $e) {
             dump($e->getMessage());
         }
 
-        return $this->lastAllBelAqui;
+        return $this->lastBelAqi;
     }
 
-    public function getLastBelAquiByStation(int $idConfig): ?Indice
+    /**
+     * @return Indice[]
+     */
+    public function belAqi(): array
     {
-        if (count($this->lastAllBelAqui) === 0) {
-            $this->lastAllBelAqui();
+        $this->lastBelAqi = [];
+        try {
+            $data = json_decode($this->stationRemoteRepository->belAqi(), flags: JSON_THROW_ON_ERROR);
+            $this->setUrlExecuted();
+            if (is_array($data)) {
+                foreach ($data as $item) {
+                    $this->belAqi[] = Indice::createFromStd($item);
+                }
+            }
+        } catch (Exception $e) {
+            dump($e->getMessage());
         }
 
-        $data = array_filter($this->lastAllBelAqui, fn($station) => (int)$station->configId === $idConfig);
+        return $this->lastBelAqi;
+    }
+
+    public function lastBelAqiByStation(int $idConfig): ?Indice
+    {
+        if (count($this->lastBelAqi) === 0) {
+            $this->lastBelAqi();
+        }
+
+        $data = array_filter($this->lastBelAqi, fn($station) => (int)$station->configId === $idConfig);
         if (count($data) === 0) {
             return null;
         } else {
             return $data[array_key_last($data)];
         }
+    }
+
+    /**
+     * @param int $idConfig
+     * @return array|Indice[]
+     */
+    public function belAqiByStation(int $idConfig): array
+    {
+        if (count($this->belAqi) === 0) {
+            $this->belAqi();
+        }
+
+        return array_filter($this->belAqi, fn($station) => (int)$station->configId === $idConfig);
     }
 
     private function setUrlExecuted(): void

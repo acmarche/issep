@@ -5,10 +5,10 @@
 {% endblock %}
 {% block body %}
     <div class="card">
-        <h3 class="card-header">Aujourd'hui (24h) {{ station.nom }}</h3>
+        <h3 class="card-header">Les derniers relevés de la station {{ station.nom }}</h3>
         <div class="card-body" style="z-index: 3;">
-
-            {% include '@AcMarcheIssep/station/_historique.html.twig' %}
+            {% include '@AcMarcheIssep/indice/_belaqi_details.html.twig' %}
+            {% include '@AcMarcheIssep/indice/_belaqi_historique.html.twig' %}
         </div>
     </div>
 {% endblock %}

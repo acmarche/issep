@@ -6,10 +6,10 @@
         <th>Couleur</th>
     </tr>
     </thead>
-    {% for indice in indices %}
+    {% for belAqi in indices %}
         <tr>
-            <td>{{ indice.label }}</td>
-            <td>{{ indice.value }}</td>
+            <td>{{ belAqi.label }}</td>
+            <td>{{ belAqi.value }}</td>
             <td>
                 {% include '@AcMarcheIssep/station/_color.html.twig' %}
             </td>
