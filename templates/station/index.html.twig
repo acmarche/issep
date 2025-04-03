@@ -13,6 +13,7 @@
                     <th>Indice</th>
                     <th>Couleur</th>
                     <th>Dernier relevé</th>
+                    <th>Corrigé</th>
                     <th>Configuration</th>
                 </tr>
                 </thead>
@@ -42,6 +43,11 @@
                         <td>
                             {% if station.lastBelAqi %}
                                 {{ station.lastBelAqi.ts|format_datetime('full', 'medium') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if station.lastBelAqi.isFixed %}
+                                Corrigé
                             {% endif %}
                         </td>
                         <td>

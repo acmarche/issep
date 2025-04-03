@@ -16,10 +16,10 @@ class IndiceUtils
      * @param Station[] $stations
      * @return void
      */
-    public function setLastBelAqiOnStations(array $stations): void
+    public function setLastBelAqiOnStations(array $stations, bool $fixIt = false): void
     {
-        array_map(function ($station) {
-            $data = $this->stationRepository->lastBelAqiByStation($station->idConfiguration);
+        array_map(function ($station) use ($fixIt) {
+            $data = $this->stationRepository->lastBelAqiByStation($station->idConfiguration, $fixIt);
             $station->lastBelAqi = $this->setColorOnIndice($data);
         }, $stations);
     }

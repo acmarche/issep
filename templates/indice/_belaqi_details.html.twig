@@ -1,29 +1,33 @@
 <div class="row">
     <div class="col-6">
         <h4 class="text-success">Dernier relevé</h4>
-        <table class="table table-bordered">
-            <tr>
-                <th>Date</th>
-                <td>
-                    {{ belAqi.ts|format_datetime('full', 'medium') }}
-                </td>
-            </tr>
-            <tr>
-                <th>BelAQI</th>
-                <td>{{ belAqi.aqiValue }}</td>
-            </tr>
-            <tr>
-                <th>Label</th>
-                <td>
-                    {{ belAqi.label }}
-                </td>
-            </tr>
-            <tr>
-                <th>Couleur</th>
-                <td>
-                    {% include '@AcMarcheIssep/station/_color.html.twig' %}
-                </td>
-            </tr>
-        </table>
+        {% if belAqi %}
+            <table class="table table-bordered">
+                <tr>
+                    <th>Date</th>
+                    <td>
+                        {{ belAqi.ts|format_datetime('full', 'medium') }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>BelAQI</th>
+                    <td>{{ belAqi.aqiValue }}</td>
+                </tr>
+                <tr>
+                    <th>Label</th>
+                    <td>
+                        {{ belAqi.label }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Couleur</th>
+                    <td>
+                        {% include '@AcMarcheIssep/station/_color.html.twig' %}
+                    </td>
+                </tr>
+            </table>
+        {% else %}
+            Pas de dernier relevé
+        {% endif %}
     </div>
 </div>

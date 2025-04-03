@@ -31,7 +31,7 @@ class StationController extends AbstractController
     {
         try {
             $stations = $this->stationRepository->getStations();
-            $this->indiceUtils->setLastBelAqiOnStations($stations);
+            $this->indiceUtils->setLastBelAqiOnStations($stations,true);
         } catch (\Exception $e) {
             $stations = [];
             $this->addFlash('danger', $e->getMessage());

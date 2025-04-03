@@ -20,6 +20,8 @@ class StationRepository
      */
     public array $belAqi = [];
 
+    private int $sinsinConfig = 100023;
+
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
     }
@@ -143,18 +145,37 @@ class StationRepository
         return $this->lastBelAqi;
     }
 
-    public function lastBelAqiByStation(int $idConfig): ?Indice
+    public function lastBelAqiByStation(int $idConfig, bool $fixIt = false): ?Indice
     {
         if (count($this->lastBelAqi) === 0) {
             $this->lastBelAqi();
         }
 
+        if ($indice = $this->findLastBelAqiByIdConfig($idConfig, false)) {
+            return $indice;
+        }
+
+        if ($fixIt) {
+            return $this->findLastBelAqiByIdConfig($this->sinsinConfig, true);
+        }
+
+        return null;
+    }
+
+    private function findLastBelAqiByIdConfig(int $idConfig, bool $fixIt = false): ?Indice
+    {
         $data = array_filter($this->lastBelAqi, fn($station) => (int)$station->configId === $idConfig);
         if (count($data) === 0) {
             return null;
-        } else {
-            return $data[array_key_last($data)];
         }
+
+        $indice = $data[array_key_last($data)];
+
+        if ($indice && $fixIt) {
+            $indice->isFixed = $fixIt;
+        }
+
+        return $indice;
     }
 
     /**
