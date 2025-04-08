@@ -11,6 +11,7 @@ enum StationsEnum: int
     case AVENUE_FRANCE = 19;
     case CONTOURNEMENT_N839 = 30;
     case CIMETIERE_AYE = 66;
+    case SINSIN = 1023;
 
     public static function stationsToKeep(): array
     {

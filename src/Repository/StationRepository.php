@@ -20,7 +20,9 @@ class StationRepository
      */
     public array $belAqi = [];
 
-    private int $sinsinConfig = 100023;
+    public int $sinsinConfigId = 100023;
+
+    public int $sinsinNetworkId = 10;
 
     public function __construct(private readonly StationRemoteRepository $stationRemoteRepository)
     {
@@ -156,7 +158,7 @@ class StationRepository
         }
 
         if ($fixIt) {
-            return $this->findLastBelAqiByIdConfig($this->sinsinConfig, true);
+            return $this->findLastBelAqiByNetworkId($this->sinsinNetworkId, true);
         }
 
         return null;
@@ -177,6 +179,23 @@ class StationRepository
 
         return $indice;
     }
+
+    private function findLastBelAqiByNetworkId(int $netWorkId, bool $fixIt = false): ?Indice
+    {
+        $data = array_filter($this->lastBelAqi, fn($station) => (int)$station->networkId === $netWorkId);
+        if (count($data) === 0) {
+            return null;
+        }
+
+        $indice = $data[array_key_last($data)];
+
+        if ($indice && $fixIt) {
+            $indice->isFixed = $fixIt;
+        }
+
+        return $indice;
+    }
+
 
     /**
      * @param int $idConfig
