@@ -13,7 +13,7 @@ class Indice
     public ?int $originalValue = null;
     public ?int $networkId = null;
 
-    public function __construct(public string $configId, public string $aqiValue, public string $pointName) {}
+    public function __construct(public ?string $configId, public string $aqiValue, public string $pointName) {}
 
     public static function createFromStd(\stdClass $data): Indice
     {

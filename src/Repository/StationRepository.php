@@ -116,9 +116,7 @@ class StationRepository
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    if ($item->configId) {
-                        $this->lastBelAqi[] = Indice::createFromStd($item);
-                    }
+                    $this->lastBelAqi[] = Indice::createFromStd($item);
                 }
             }
         } catch (Exception $e) {
@@ -133,15 +131,13 @@ class StationRepository
      */
     public function belAqi(): array
     {
-        $this->lastBelAqi = [];
+        $this->belAqi = [];
         try {
             $data = json_decode($this->stationRemoteRepository->belAqi(), flags: JSON_THROW_ON_ERROR);
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    if($item->configId) {
-                        $this->belAqi[] = Indice::createFromStd($item);
-                    }
+                    $this->belAqi[] = Indice::createFromStd($item);
                 }
             }
         } catch (Exception $e) {
@@ -188,6 +184,8 @@ class StationRepository
     {
         $data = array_filter($this->lastBelAqi, fn($station) => (int)$station->networkId === $netWorkId);
         if (count($data) === 0) {
+            dd($data, $netWorkId, $this->lastBelAqi);
+
             return null;
         }
 
