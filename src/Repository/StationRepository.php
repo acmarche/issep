@@ -116,7 +116,9 @@ class StationRepository
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    $this->lastBelAqi[] = Indice::createFromStd($item);
+                    if ($item->configId) {
+                        $this->lastBelAqi[] = Indice::createFromStd($item);
+                    }
                 }
             }
         } catch (Exception $e) {
@@ -137,7 +139,9 @@ class StationRepository
             $this->setUrlExecuted();
             if (is_array($data)) {
                 foreach ($data as $item) {
-                    $this->belAqi[] = Indice::createFromStd($item);
+                    if($item->configId) {
+                        $this->belAqi[] = Indice::createFromStd($item);
+                    }
                 }
             }
         } catch (Exception $e) {
