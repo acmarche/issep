@@ -40,10 +40,10 @@ class StationRepository
         $this->setUrlExecuted();
 
         foreach ($stationsTmp as $stationTmp) {
-            if (in_array($stationTmp->id, StationsEnum::stationsToKeep())) {
+          //  if (in_array($stationTmp->id, StationsEnum::stationsToKeep())) {
                 $station = Station::fromStd($stationTmp);
                 $stations[] = $station;
-            }
+         //   }
         }
 
         return SortUtils::sortStations($stations);
