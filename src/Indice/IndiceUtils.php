@@ -49,7 +49,7 @@ class IndiceUtils
      * @return void
      * @throws \DateMalformedStringException
      */
-    public function setLastData(array $stations, \DateTime $dateEnd = null): void
+    public function setLastData(array $stations, ?\DateTime $dateEnd = null): void
     {
         $dateBegin = date('Y-m-d');
         if (!$dateEnd) {
